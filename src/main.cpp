@@ -12,6 +12,7 @@ enum MatrixType {LOWER_DIAG_ROW,UPPER_ROW,ERRO};  // Tipo de matriz descrita nos
 /*
     Abre o arquivo e armazena o conteudo inteiro do texto em uma string,
     mais eficiente para fazer o parsing e gerar a matriz porque tudo vai estar em memoria
+    http://insanecoding.blogspot.com/2011/11/how-to-read-in-file-in-c.html
 */
 std::string get_file_contents(const char *filename)
 {
@@ -87,6 +88,7 @@ int getProblemData( unsigned int & size, MatrixType & mType, std::string & text 
     Aloca a matriz, por enquanto na forma de uma matriz realmente,
     A melhor implementacao seria em uma vetor de uma dimensao com
     um calculo de offset para simular uma matriz
+    https://stackoverflow.com/questions/27380024/store-triangular-matrix-efficiently
 */
 void alocateMatrix(std::vector< std::vector<int> > v, int numNodes) {
     int i = numNodes;
