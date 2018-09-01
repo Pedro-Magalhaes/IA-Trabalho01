@@ -124,6 +124,7 @@ int getWeightData( std::vector< std::vector<int> > & weights, int nodeNumber, Ma
         default:
             break;
     }
+    return 0;
 }
 
 
