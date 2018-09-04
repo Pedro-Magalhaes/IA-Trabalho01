@@ -6,7 +6,7 @@
 #include <fstream>
 
 
-enum MatrixType {LOWER_DIAG_ROW,UPPER_ROW,ERRO};  // Tipo de matriz descrita nos arquivos
+#include "matrixRepresentation.h"
 
 
 /*
@@ -132,19 +132,23 @@ int getWeightData( std::vector< std::vector<int> > & weights, int nodeNumber, Ma
 
 int main () {
 
-    std::vector<std::string> files = {/*"dataset/brazil58.tsp","dataset/dantzig42.tsp","dataset/gr48.tsp","dataset/gr120.tsp",*/"dataset/pa561.tsp"};
+    std::vector<std::string> files = {/*"dataset/brazil58.tsp",*/"dataset/dantzig42.tsp"/*,"dataset/gr48.tsp","dataset/gr120.tsp","dataset/pa561.tsp"*/};
     std::string fileContent = "";
     int beginOfMatrixPos=0;
     std::vector< std::vector<int> > weights;
+    matrixRepresentation * problemMatrix;
+    unsigned int nodeNumber = 0;
+    std::string problemDescription;
+    std::string problemData;
     for (size_t i = 0; i < files.size(); i++) {
-        unsigned int nodeNumber = 0;
+        
         MatrixType m; 
         try
         {
             fileContent = get_file_contents(files[i].c_str());
             beginOfMatrixPos = getBeginOfMatrix(fileContent);
-            std::string problemDescription = fileContent.substr( 0, beginOfMatrixPos );
-            std::string problemData = fileContent.substr(beginOfMatrixPos);
+            problemDescription = fileContent.substr( 0, beginOfMatrixPos );
+            problemData = fileContent.substr(beginOfMatrixPos);
             fileContent.clear();
             if( getProblemData( nodeNumber, m, problemDescription ) != 0 ) { // "!= 0" eh erro
                 std::cout<<"Erro lendo propriedades do problema "<<files[i]<<std::endl;
@@ -157,7 +161,9 @@ int main () {
         {
             std::cerr << e.what() << '\n';
         }
-       
+
+        problemMatrix = new matrixRepresentation(nodeNumber,m);
+        problemMatrix->readMatrixData(problemData);       
 
     }
     
