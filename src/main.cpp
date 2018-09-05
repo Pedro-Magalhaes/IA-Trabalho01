@@ -28,6 +28,7 @@ std::string get_file_contents(const char *filename)
     throw(errno);
 }
 
+
 /* Vai encontrar a posicao do primeiro numero na string e
     saberemos onde começar a leitura da matriz  */
 int getBeginOfMatrix(std::string &filecontent)
@@ -45,6 +46,7 @@ int getBeginOfMatrix(std::string &filecontent)
     }
     return pos;
 }
+
 
 /*
     Recebe a string com a descricao do problema e extrai o numero de cidades e
@@ -99,60 +101,11 @@ int getProblemData(unsigned int &size, MatrixType &mType, std::string &text)
     }
 }
 
-/*
-    Aloca a matriz, por enquanto na forma de uma matriz realmente,
-    A melhor implementacao seria em uma vetor de uma dimensao com
-    um calculo de offset para simular uma matriz
-    https://stackoverflow.com/questions/27380024/store-triangular-matrix-efficiently
-*/
-void alocateMatrix(std::vector<std::vector<int>> v, int numNodes)
-{
-    int i = numNodes;
-    v.resize(i);
-    while (i > 0)
-    {
-        v[--i].resize(i + 1); // +1 pois o elemento v[0] deve ter 1 posição e o v[n-1] n posicoes
-    }
-    std::cout << "Size do vetor: " << v.size() << "Size do ultimo elemento " << v.back().size() << std::endl;
-}
-
-/*
-    Pega os pesos de uma matriz inferior
-*/
-int getMatrixFromLower(std::vector<std::vector<int>> &weights, int nodeNumber, std::string &data)
-{
-    return 0;
-}
-
-/*
-    Pega os pesos de uma matriz superior
-*/
-int getMatrixFromUpper(std::vector<std::vector<int>> &weights, int nodeNumber, std::string &data)
-{
-    return 0;
-}
-
-int getWeightData(std::vector<std::vector<int>> &weights, int nodeNumber, MatrixType mType, std::string &data)
-{
-
-    switch (mType)
-    {
-    case MatrixType::LOWER_DIAG_ROW:
-        // getMatrixFromLower(weights,nodeNumber,data);
-        break;
-    case MatrixType::UPPER_ROW:
-        // getMatrixFromUpper(weights,nodeNumber,data);
-        break;
-    default:
-        break;
-    }
-    return 0;
-}
 
 int main()
 {
 
-    std::vector<std::string> files = {/*"dataset/brazil58.tsp",*/ "dataset/dantzig42.tsp" ,"dataset/gr48.tsp"/*,"dataset/gr120.tsp","dataset/pa561.tsp"*/};
+    std::vector<std::string> files = {"dataset/brazil58.tsp", "dataset/dantzig42.tsp" ,"dataset/gr48.tsp","dataset/gr120.tsp","dataset/pa561.tsp"};
 
     for (size_t i = 0; i < files.size(); i++)
     {
@@ -164,33 +117,25 @@ int main()
         std::string problemDescription;
         std::string problemData;
         MatrixType m;
+        std::cout<<"Problem "<<files[i]<<std::endl;
         try
         {
-            std::cout << "Alo -2 " << std::endl;
             fileContent = get_file_contents(files[i].c_str());
-            std::cout << "Alo -0 " << std::endl;
             beginOfMatrixPos = getBeginOfMatrix(fileContent);
-            std::cout << "Alo -1 " << std::endl;
             problemDescription = fileContent.substr(0, beginOfMatrixPos);
             problemData = fileContent.substr(beginOfMatrixPos);
-            std::cout << "Alo 0 " << std::endl;
             if (getProblemData(nodeNumber, m, problemDescription) != 0)
             { // "!= 0" eh erro
                 std::cout << "Erro lendo propriedades do problema " << files[i] << std::endl;
             }
-            std::cout << "Dados " << files[i] << ":\n"
-                      << "Nodes: " << nodeNumber << "\nMatrix: " << m << std::endl;
-            //alocateMatrix(weights,nodeNumber); // Aloca espaco para a matriz de adjacencia
-            //getWeightData(weights,nodeNumber,m,problemData); // Preenche a matriz com os pesos
         }
         catch (const std::exception &e)
         {
             std::cerr << e.what() << '\n';
         }
+        
         problemMatrix = new matrixRepresentation(nodeNumber, m);
-        std::cout << "Alo 1 " << std::endl;
         problemMatrix->readMatrixData(problemData);
-        std::cout << "Alo @ " << std::endl;
     }
 
     return 0;

@@ -9,16 +9,21 @@ CXX=g++
 CFLAGS=-W -Wall -std=c++14
 LIBS=-lm
 EXEC=buscaTSP
-RM=rm -f
+RM=rm
+
+SRCDIR   = src
+OBJDIR   = obj
+BINDIR   = bin
+
 # todos os arquivos .cpp da pasta serao considerados src
-SRC= $(wildcard src/*.cpp)
+SRC= $(wildcard $(SRCDIR)/*.cpp)
 # todos os arquivos do SRC (.cpp) vao gerar um obj
-OBJ= $(SRC:.cpp=.o)
-all: $(EXEC)
-buscaTSP:$(OBJ)
+OBJ= $(SRC:$(SRCDIR)/%.cpp=$(OBJDIR)/%.o)
+all: $(BINDIR)/$(EXEC)
+$(BINDIR)/$(EXEC):$(OBJ)
 	$(CXX) -o $@ $^ $(LIBS)
-%.o: %.cpp
-	$(CXX) -o $@ -c $^ $(CFLAGS) $(LIBS)
+$(OBJ): $(OBJDIR)/%.o : $(SRCDIR)/%.cpp
+	$(CXX) $(CFLAGS) -c $< -o $@  $(LIBS)
 	
 clean:
 	$(RM) $(OBJ)
