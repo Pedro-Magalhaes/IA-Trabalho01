@@ -5,9 +5,7 @@
 #include <cerrno>
 #include <fstream>
 
-
 #include "matrixRepresentation.h"
-
 
 /*
     Abre o arquivo e armazena o conteudo inteiro do texto em uma string,
@@ -16,33 +14,35 @@
 */
 std::string get_file_contents(const char *filename)
 {
-  std::ifstream in(filename, std::ios::in | std::ios::binary);
-  if (in)
-  {
-    std::string contents;
-    in.seekg(0, std::ios::end); // leva o cursor do arquivo até final
-    contents.resize(in.tellg()); // reserva espaço em memória pra caber todo o arquivo
-    in.seekg(0, std::ios::beg); //retorna o cursor pro inicio do arquivo
-    in.read(&contents[0], contents.size()); // le o arquivo inteiro e coloca na memoria
-    in.close();
-    return(contents);
-  }
-  throw(errno);
+    std::ifstream in(filename, std::ios::in | std::ios::binary);
+    if (in)
+    {
+        std::string contents;
+        in.seekg(0, std::ios::end);             // leva o cursor do arquivo até final
+        contents.resize(in.tellg());            // reserva espaço em memória pra caber todo o arquivo
+        in.seekg(0, std::ios::beg);             //retorna o cursor pro inicio do arquivo
+        in.read(&contents[0], contents.size()); // le o arquivo inteiro e coloca na memoria
+        in.close();
+        return (contents);
+    }
+    throw(errno);
 }
-
 
 /* Vai encontrar a posicao do primeiro numero na string e
     saberemos onde começar a leitura da matriz  */
-int getBeginOfMatrix(std::string &filecontent) {
-    std::smatch m; // 
-    
-    if(filecontent.empty()) {
+int getBeginOfMatrix(std::string &filecontent)
+{
+    std::smatch m; //
+
+    if (filecontent.empty())
+    {
         return -1;
     }
     int pos = -1;
-    if(std::regex_search(filecontent,m,std::regex("EDGE_WEIGHT_SECTION[.]*[[:cntrl:]][[:blank:]]*"))) { // encontra a string com "EDGE_WEIGHT_SECTION" incluindo a mudança de linha
-        pos = m.position()+m.length(); // retorna a posição do fim da string
-    } 
+    if (std::regex_search(filecontent, m, std::regex("EDGE_WEIGHT_SECTION[.]*[[:cntrl:]][[:blank:]]*")))
+    {                                    // encontra a string com "EDGE_WEIGHT_SECTION" incluindo a mudança de linha
+        pos = m.position() + m.length(); // retorna a posição do fim da string
+    }
     return pos;
 }
 
@@ -51,37 +51,52 @@ int getBeginOfMatrix(std::string &filecontent) {
     o tipo de matriz do problema
 */
 
-int getProblemData( unsigned int & size, MatrixType & mType, std::string & text ) {
+int getProblemData(unsigned int &size, MatrixType &mType, std::string &text)
+{
     std::regex numNodeRegex = std::regex("DIMENSION:[[:blank:]]*([[:d:]]+)");
     std::regex matrixTypeRegex = std::regex("EDGE_WEIGHT_FORMAT:[[:blank:]]*([[:alpha:]_]+)");
     std::smatch m;
-    
-    if( std::regex_search( text,m,numNodeRegex) ) { // o regex_serch retorna em m[1] o numero
+
+    if (std::regex_search(text, m, numNodeRegex))
+    { // o regex_serch retorna em m[1] o numero
         std::stringstream ss(m[1].str());
-        if( ss >> size  ) { // Conseguimos pegar o numero de nodes, vamos pegar o tipo de matriz
-            if( std::regex_search( text,m,matrixTypeRegex) ) {
-                if( m[1].str().compare("UPPER_ROW") ) {
+        if (ss >> size)
+        { // Conseguimos pegar o numero de nodes, vamos pegar o tipo de matriz
+            if (std::regex_search(text, m, matrixTypeRegex))
+            {
+                if (m[1].str().compare("UPPER_ROW") == 0)
+                {
+                    std::cout << "padrao reconhecido UP_ROW: " << m[1] << std::endl;
                     mType = MatrixType::UPPER_ROW;
-                } else if( m[1].str().compare("LOWER_DIAG_ROW") ) {
+                }
+                else if (m[1].str().compare("LOWER_DIAG_ROW") == 0)
+                {
+                    std::cout << "padrao reconhecido LW_ROW: " << m[1] << std::endl;
                     mType = MatrixType::LOWER_DIAG_ROW;
-                } else {
-                    std::cout<< "Modelo de matriz não implementado ou nao reconhecido: "<<m[1]<<std::endl;
+                }
+                else
+                {
+                    mType = MatrixType::ERRO;
+                    std::cout << "Modelo de matriz não implementado ou nao reconhecido: " << m[1] << std::endl;
                     return -1;
                 }
             }
-        }        
-    } else {
-        std::cout<<"Sem match numero "<< text <<std::endl;
+        }
+    }
+    else
+    {
+        std::cout << "Sem match numero " << text << std::endl;
         return -1;
     }
 
-    
-    if( size > 0 && mType != MatrixType::ERRO ) {
+    if (size > 0 && mType != MatrixType::ERRO)
+    {
         return 0;
-    } else {
+    }
+    else
+    {
         return -1;
     }
-    
 }
 
 /*
@@ -90,83 +105,93 @@ int getProblemData( unsigned int & size, MatrixType & mType, std::string & text 
     um calculo de offset para simular uma matriz
     https://stackoverflow.com/questions/27380024/store-triangular-matrix-efficiently
 */
-void alocateMatrix(std::vector< std::vector<int> > v, int numNodes) {
+void alocateMatrix(std::vector<std::vector<int>> v, int numNodes)
+{
     int i = numNodes;
     v.resize(i);
-    while( i > 0 ) {
-        v[--i].resize(i+1); // +1 pois o elemento v[0] deve ter 1 posição e o v[n-1] n posicoes
+    while (i > 0)
+    {
+        v[--i].resize(i + 1); // +1 pois o elemento v[0] deve ter 1 posição e o v[n-1] n posicoes
     }
-    std::cout<<"Size do vetor: "<<v.size()<<"Size do ultimo elemento "<<v.back().size()<<std::endl;
+    std::cout << "Size do vetor: " << v.size() << "Size do ultimo elemento " << v.back().size() << std::endl;
 }
 
 /*
     Pega os pesos de uma matriz inferior
 */
-int getMatrixFromLower(std::vector< std::vector<int> > & weights,int nodeNumber,std::string & data) {
+int getMatrixFromLower(std::vector<std::vector<int>> &weights, int nodeNumber, std::string &data)
+{
     return 0;
 }
 
 /*
     Pega os pesos de uma matriz superior
 */
-int getMatrixFromUpper(std::vector< std::vector<int> > & weights,int nodeNumber,std::string & data) {
-    return 0;    
+int getMatrixFromUpper(std::vector<std::vector<int>> &weights, int nodeNumber, std::string &data)
+{
+    return 0;
 }
 
-int getWeightData( std::vector< std::vector<int> > & weights, int nodeNumber, MatrixType mType ,std::string & data ) {
-    
+int getWeightData(std::vector<std::vector<int>> &weights, int nodeNumber, MatrixType mType, std::string &data)
+{
+
     switch (mType)
     {
-        case MatrixType::LOWER_DIAG_ROW :
-            // getMatrixFromLower(weights,nodeNumber,data);
-            break;
-        case MatrixType::UPPER_ROW :
-            // getMatrixFromUpper(weights,nodeNumber,data);
-            break;
-        default:
-            break;
+    case MatrixType::LOWER_DIAG_ROW:
+        // getMatrixFromLower(weights,nodeNumber,data);
+        break;
+    case MatrixType::UPPER_ROW:
+        // getMatrixFromUpper(weights,nodeNumber,data);
+        break;
+    default:
+        break;
     }
     return 0;
 }
 
+int main()
+{
 
-int main () {
+    std::vector<std::string> files = {/*"dataset/brazil58.tsp",*/ "dataset/dantzig42.tsp" ,"dataset/gr48.tsp"/*,"dataset/gr120.tsp","dataset/pa561.tsp"*/};
 
-    std::vector<std::string> files = {/*"dataset/brazil58.tsp",*/"dataset/dantzig42.tsp"/*,"dataset/gr48.tsp","dataset/gr120.tsp","dataset/pa561.tsp"*/};
-    std::string fileContent = "";
-    int beginOfMatrixPos=0;
-    std::vector< std::vector<int> > weights;
-    matrixRepresentation * problemMatrix;
-    unsigned int nodeNumber = 0;
-    std::string problemDescription;
-    std::string problemData;
-    for (size_t i = 0; i < files.size(); i++) {
-        
-        MatrixType m; 
+    for (size_t i = 0; i < files.size(); i++)
+    {
+
+        std::string fileContent = "";
+        int beginOfMatrixPos = 0;
+        matrixRepresentation *problemMatrix;
+        unsigned int nodeNumber = 0;
+        std::string problemDescription;
+        std::string problemData;
+        MatrixType m;
         try
         {
+            std::cout << "Alo -2 " << std::endl;
             fileContent = get_file_contents(files[i].c_str());
+            std::cout << "Alo -0 " << std::endl;
             beginOfMatrixPos = getBeginOfMatrix(fileContent);
-            problemDescription = fileContent.substr( 0, beginOfMatrixPos );
+            std::cout << "Alo -1 " << std::endl;
+            problemDescription = fileContent.substr(0, beginOfMatrixPos);
             problemData = fileContent.substr(beginOfMatrixPos);
-            fileContent.clear();
-            if( getProblemData( nodeNumber, m, problemDescription ) != 0 ) { // "!= 0" eh erro
-                std::cout<<"Erro lendo propriedades do problema "<<files[i]<<std::endl;
+            std::cout << "Alo 0 " << std::endl;
+            if (getProblemData(nodeNumber, m, problemDescription) != 0)
+            { // "!= 0" eh erro
+                std::cout << "Erro lendo propriedades do problema " << files[i] << std::endl;
             }
-            std::cout<<"Dados "<<files[i]<<":\n"<<"Nodes: "<<nodeNumber<<"\nMatrix: "<<m<<std::endl;
-            alocateMatrix(weights,nodeNumber); // Aloca espaco para a matriz de adjacencia
-            getWeightData(weights,nodeNumber,m,problemData); // Preenche a matriz com os pesos
+            std::cout << "Dados " << files[i] << ":\n"
+                      << "Nodes: " << nodeNumber << "\nMatrix: " << m << std::endl;
+            //alocateMatrix(weights,nodeNumber); // Aloca espaco para a matriz de adjacencia
+            //getWeightData(weights,nodeNumber,m,problemData); // Preenche a matriz com os pesos
         }
-        catch(const std::exception& e)
+        catch (const std::exception &e)
         {
             std::cerr << e.what() << '\n';
         }
-
-        problemMatrix = new matrixRepresentation(nodeNumber,m);
-        problemMatrix->readMatrixData(problemData);       
-
+        problemMatrix = new matrixRepresentation(nodeNumber, m);
+        std::cout << "Alo 1 " << std::endl;
+        problemMatrix->readMatrixData(problemData);
+        std::cout << "Alo @ " << std::endl;
     }
-    
 
     return 0;
 }

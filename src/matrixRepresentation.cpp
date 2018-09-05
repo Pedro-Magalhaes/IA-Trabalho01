@@ -6,61 +6,66 @@
 matrixRepresentation::matrixRepresentation(unsigned int n)
 {
     // total de posiçoes é n-1 M[0][0] faz parte da diagonal e é 0
-    matrixData.resize(n - 1);
+    matrixData.resize( (n * (n-1))/2 ) ;
     nodeNumber = n;
 }
 matrixRepresentation::matrixRepresentation(unsigned int n, MatrixType m)
 {
     // total de posiçoes é n-1 M[0][0] faz parte da diagonal e é 0
-    matrixData.resize(n - 1);
+    matrixData.resize( (n * (n-1))/2 );
     mType = m;
     nodeNumber = n;
+}
+
+matrixRepresentation::matrixRepresentation(const matrixRepresentation & other) {
+    this->matrixData = other.matrixData;
+    this->mType = other.mType;
+    this->nodeNumber = other.nodeNumber;
 }
 
 matrixRepresentation::~matrixRepresentation()
 {
 }
 
-bool matrixRepresentation::readMatrixData(std::string &matrixData)
+bool matrixRepresentation::readMatrixData(std::string & matrixDataString)
 {
-    std::stringstream ss(matrixData);
+    std::stringstream ss(matrixDataString);
     int x;
     // dados separados por 0's
     // como vamos armazenar os dados como uma matriz inferior basta ler direto
     if (this->mType == MatrixType::LOWER_DIAG_ROW)
     {
-        while (ss >> x)
+        unsigned int nextPosition = 0;
+        for(unsigned int i = this->nodeNumber; i > 0; i--)
         {
-            if (x == 0)
+            while (ss >> x)
+        {
+            if (x != 0)
             {
-                std::cout << "\n"
-                          << std::endl;
-            }
-            else
-            {
-                std::cout << x << " ";
+                this->matrixData[nextPosition++] = x;
             }
         }
+        }
+        
+        std::cout<<"First = "<<this->matrixData[0]<<std::endl;
     }
     // dados separados por linha, nao contem 0's
     // temos que transformar para saber a linha do vetor
     else if ( this->mType == MatrixType::UPPER_ROW )
     {
-        unsigned int limite = this->nodeNumber;
         unsigned int contador = 0;
         unsigned int linha = 0;
-        while( ss >> x ) 
+        for(unsigned int i = this->nodeNumber-1; i > 0; i--)
         {
-            if(contador == limite)
+            while (ss >> x)
             {
-                contador = 0;
-                limite--;
-                linha++;
+                this->matrixData[this->vectorPosition(linha,contador)] = x;
+                contador++;
             }
-            this->matrixData[this->vectorPosition(linha,contador)] = x;
-        }
-        std::cout<< " ultimo elemento "<< matrixData.back()<<std::endl;
-
+            linha++;
+            contador = 0;
+        }          
+        
     }
 
     return true;

@@ -11,10 +11,11 @@ class matrixRepresentation
     unsigned int vectorPosition ( unsigned int line,unsigned int row );
     
   public:
-    
+    matrixRepresentation(){}
     matrixRepresentation(unsigned int n); // n = number of nodes
     matrixRepresentation(unsigned int n, MatrixType m); 
-    bool readMatrixData ( std::string & matrixData );
+    matrixRepresentation(const matrixRepresentation & other);
+    bool readMatrixData ( std::string & matrixDataString );
     ~matrixRepresentation();
     
   private:
