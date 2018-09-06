@@ -16,8 +16,10 @@ class matrixRepresentation
     matrixRepresentation(unsigned int n, MatrixType m); 
     matrixRepresentation(const matrixRepresentation & other);
     bool readMatrixData ( std::string & matrixDataString );
+    int valueat(const int line, const int col);
+    void printVector();
     ~matrixRepresentation();
-    
+
   private:
     unsigned int nodeNumber;
     MatrixType mType; // tipo da matriz a ser lida

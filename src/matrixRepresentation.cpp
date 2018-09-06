@@ -28,6 +28,14 @@ matrixRepresentation::~matrixRepresentation()
 {
 }
 
+int matrixRepresentation::valueat(const int line, const int col) {
+    
+    if( line == col ) { // diagonal
+        return 0;
+    }
+    return this->matrixData[ this->vectorPosition(line,col) ];
+}
+
 bool matrixRepresentation::readMatrixData(std::string &matrixDataString)
 {
     std::stringstream ss(matrixDataString);
@@ -52,29 +60,38 @@ bool matrixRepresentation::readMatrixData(std::string &matrixDataString)
     // temos que transformar para saber a linha do vetor
     else if (this->mType == MatrixType::UPPER_ROW)
     {
-        unsigned int contador = 0;
+        unsigned int contador = 1;
         unsigned int linha = 0;
         for (unsigned int i = this->nodeNumber - 1; i > 0; i--)
         {
-            while (ss >> x)
+            while ( (contador < this->nodeNumber) && ss >> x)
             {
                 this->matrixData[this->vectorPosition(linha, contador)] = x;
                 contador++;
             }
             linha++;
-            contador = 0;
+            contador = linha + 1;
         }
     }
-    std::cout<<"First = "<<this->matrixData[0]<<" Last = "<< this->matrixData.back() <<" size vector = "<< this->matrixData.size() <<std::endl;
+    //std::cout<<"First = "<<this->matrixData[0]<<" Last = "<< this->matrixData.back() <<" size vector = "<< this->matrixData.size() <<std::endl;
     return true;
+}
+
+void matrixRepresentation::printVector() {
+    for (size_t i = 0; i < this->matrixData.size(); i++)
+    {
+        std::cout<<" "<<matrixData[i];
+    }
+    std::cout<<std::endl;
 }
 
 // assume que nenhuma entrada vai ter line == row
 // Vai receber um par linha coluna da matriz e retornar o indice correspondente
+//https://stackoverflow.com/questions/26402320/map-upper-triangular-matrix-on-vector-skipping-the-diagonal
 unsigned int matrixRepresentation::vectorPosition(unsigned int line, unsigned int row)
 {
     unsigned int x, y;
-    if (line < row)
+    if (line > row)
     {
         x = row;
         y = line;
