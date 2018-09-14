@@ -68,15 +68,21 @@ bool matrixRepresentation::readMatrixData(std::string &matrixDataString)
         unsigned int linha = 0;
         for (unsigned int i = this->nodeNumber - 1; i > 0; i--)
         {
+            // preenchendo a diagonal 
+            //OBS: VAMOS TER QUE TESTAR SE O PESO EH 0 quando ordenar porque o peso 0 sempre vai ser o primeiro do vetor ordenado
             this->matrixData[i][i].second = 0;
             this->matrixData[i][i].first = i;
             while (contador < i)
             { 
                 ss >> x;
                 printf("contador %u , i: %u \n",contador,i);
-
+                // colocando os dados primeiro na coluna
                 this->matrixData[contador][linha].second = x;
                 this->matrixData[contador][linha].first = contador;
+                // agora na parte transtposta (na linha)
+                this->matrixData[linha][contador].second = x;
+                this->matrixData[linha][contador].first = contador;
+
                 contador++;
                 if( x > maior)
                 {
