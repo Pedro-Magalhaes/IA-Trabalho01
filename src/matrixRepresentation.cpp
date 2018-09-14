@@ -3,6 +3,8 @@
 #include <iostream>
 #include <sstream>
 
+
+
 matrixRepresentation::matrixRepresentation(unsigned int n)
 {
     // total de posiçoes é n-1 M[0][0] faz parte da diagonal e é 0
@@ -12,7 +14,10 @@ matrixRepresentation::matrixRepresentation(unsigned int n)
 matrixRepresentation::matrixRepresentation(unsigned int n, MatrixType m)
 {
     // total de posiçoes é n-1 M[0][0] faz parte da diagonal e é 0
-    matrixData.resize((n * (n - 1)) / 2);
+    matrixData.resize(n);
+    for (int i = 0; i < n ; i++) {
+        matrixData[i].resize(n);
+    }
     mType = m;
     nodeNumber = n;
 }
@@ -30,8 +35,9 @@ matrixRepresentation::~matrixRepresentation()
 
 bool matrixRepresentation::readMatrixData(std::string &matrixDataString)
 {
+
     std::stringstream ss(matrixDataString);
-    int x;
+    int x , maior = 0;
     // dados separados por 0's
     // como vamos armazenar os dados como uma matriz inferior basta ler direto
     if (this->mType == MatrixType::LOWER_DIAG_ROW)
@@ -43,7 +49,13 @@ bool matrixRepresentation::readMatrixData(std::string &matrixDataString)
             {
                 if (x != 0)
                 {
-                    this->matrixData[nextPosition++] = x;
+                    this->matrixData[i][nextPosition].first = nextPosition; // guardando o "id" do no, para não perder a info ao ordenar
+                    this->matrixData[i][nextPosition].second = x; // peso do no
+                    if( x > maior)
+                    {
+                        maior = x;
+                    }
+                    nextPosition++;
                 }
             }
         }
@@ -56,16 +68,26 @@ bool matrixRepresentation::readMatrixData(std::string &matrixDataString)
         unsigned int linha = 0;
         for (unsigned int i = this->nodeNumber - 1; i > 0; i--)
         {
-            while (ss >> x)
-            {
-                this->matrixData[this->vectorPosition(linha, contador)] = x;
+            this->matrixData[i][i].second = 0;
+            this->matrixData[i][i].first = i;
+            while (contador < i)
+            { 
+                ss >> x;
+                printf("contador %u , i: %u \n",contador,i);
+
+                this->matrixData[contador][linha].second = x;
+                this->matrixData[contador][linha].first = contador;
                 contador++;
+                if( x > maior)
+                {
+                    maior = x;
+                }
             }
             linha++;
             contador = 0;
         }
     }
-    std::cout<<"First = "<<this->matrixData[0]<<" Last = "<< this->matrixData.back() <<" size vector = "<< this->matrixData.size() <<std::endl;
+    std::cout<<"Maior: "<< maior <<" First = "<<this->matrixData[0][0].second<<" Last = "<< this->matrixData.back().back().second << std::endl;
     return true;
 }
 
