@@ -97,21 +97,3 @@ bool matrixRepresentation::readMatrixData(std::string &matrixDataString)
     return true;
 }
 
-// assume que nenhuma entrada vai ter line == row
-// Vai receber um par linha coluna da matriz e retornar o indice correspondente
-unsigned int matrixRepresentation::vectorPosition(unsigned int line, unsigned int row)
-{
-    unsigned int x, y;
-    if (line < row)
-    {
-        x = row;
-        y = line;
-    }
-    else
-    {
-        y = row;
-        x = line;
-    }
-
-    return x + ((y - 1) * y) / 2;
-}

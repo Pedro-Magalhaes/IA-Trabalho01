@@ -9,8 +9,7 @@ enum MatrixType {LOWER_DIAG_ROW,UPPER_ROW,ERRO};  // Tipo de matriz descrita nos
 class matrixRepresentation
 {
   private:
-    unsigned int vectorPosition ( unsigned int line,unsigned int row );
-    
+      
   public:
     matrixRepresentation(){}
     matrixRepresentation(unsigned int n); // n = number of nodes
