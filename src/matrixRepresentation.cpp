@@ -3,7 +3,7 @@
 #include <iostream>
 #include <sstream>
 
-
+// cada nó é composto por um pair e possui seu indice (id da cidade) no FIRST e o peso da aresta no SECOND
 
 matrixRepresentation::matrixRepresentation(unsigned int n)
 {
@@ -31,6 +31,14 @@ matrixRepresentation::matrixRepresentation(const matrixRepresentation &other)
 
 matrixRepresentation::~matrixRepresentation()
 {
+}
+
+int matrixRepresentation::valueat(const int line, const int col) {
+    
+    if( line == col ) { // diagonal
+        return 0;
+    }
+    return this->matrixData[line][col].second;
 }
 
 bool matrixRepresentation::readMatrixData(std::string &matrixDataString)
@@ -64,7 +72,7 @@ bool matrixRepresentation::readMatrixData(std::string &matrixDataString)
     // temos que transformar para saber a linha do vetor
     else if (this->mType == MatrixType::UPPER_ROW)
     {
-        unsigned int contador = 0;
+        unsigned int contador = 1;
         unsigned int linha = 0;
         for (unsigned int i = this->nodeNumber - 1; i > 0; i--)
         {
@@ -90,7 +98,7 @@ bool matrixRepresentation::readMatrixData(std::string &matrixDataString)
                 }
             }
             linha++;
-            contador = 0;
+            contador = linha + 1;
         }
     }
     std::cout<<"Maior: "<< maior <<" First = "<<this->matrixData[0][0].second<<" Last = "<< this->matrixData.back().back().second << std::endl;
