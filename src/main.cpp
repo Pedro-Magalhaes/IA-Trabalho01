@@ -133,7 +133,6 @@ int main()
         {
             std::cerr << e.what() << '\n';
         }
-        
         problemMatrix = new matrixRepresentation(nodeNumber, m);
         problemMatrix->readMatrixData(problemData);
     }

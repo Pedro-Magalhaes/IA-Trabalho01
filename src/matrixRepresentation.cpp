@@ -2,6 +2,7 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
+#include <algorithm>
 
 // cada nó é composto por um pair e possui seu indice (id da cidade) no FIRST e o peso da aresta no SECOND
 
@@ -15,7 +16,7 @@ matrixRepresentation::matrixRepresentation(unsigned int n, MatrixType m)
 {
     // total de posiçoes é n-1 M[0][0] faz parte da diagonal e é 0
     matrixData.resize(n);
-    for (int i = 0; i < n ; i++) {
+    for (unsigned int i = 0; i < n ; i++) {
         matrixData[i].resize(n);
     }
     mType = m;
@@ -41,30 +42,33 @@ int matrixRepresentation::valueat(const int line, const int col) {
     return this->matrixData[line][col].second;
 }
 
+std::pair<int,int> matrixRepresentation::nodeAt(const int line, const int col) {
+    
+    return this->matrixData[line][col];
+}
+
 bool matrixRepresentation::readMatrixData(std::string &matrixDataString)
 {
-
     std::stringstream ss(matrixDataString);
     int x , maior = 0;
     // dados separados por 0's
     // como vamos armazenar os dados como uma matriz inferior basta ler direto
     if (this->mType == MatrixType::LOWER_DIAG_ROW)
     {
-        unsigned int nextPosition = 0;
-        for (unsigned int i = this->nodeNumber; i > 0; i--)
+        for (unsigned int i = 0 ; i < this->nodeNumber; i++)
         {
-            while (ss >> x)
+            for (unsigned int j = 0; j < i+1; j++)
             {
-                if (x != 0)
+                ss >> x;
+                this->matrixData[i][j].first = i; // guardando o "id" do no, para não perder a info ao ordenar
+                this->matrixData[i][j].second = x; // peso do no
+                this->matrixData[j][i].first = j; // guardando o "id" do no, para não perder a info ao ordenar
+                this->matrixData[j][i].second = x; // peso do no
+                if( x > maior)
                 {
-                    this->matrixData[i][nextPosition].first = nextPosition; // guardando o "id" do no, para não perder a info ao ordenar
-                    this->matrixData[i][nextPosition].second = x; // peso do no
-                    if( x > maior)
-                    {
-                        maior = x;
-                    }
-                    nextPosition++;
+                    maior = x;
                 }
+                
             }
         }
     }
@@ -72,36 +76,66 @@ bool matrixRepresentation::readMatrixData(std::string &matrixDataString)
     // temos que transformar para saber a linha do vetor
     else if (this->mType == MatrixType::UPPER_ROW)
     {
-        unsigned int contador = 1;
-        unsigned int linha = 0;
-        for (unsigned int i = this->nodeNumber - 1; i > 0; i--)
+        for (unsigned int i = 0; i < this->nodeNumber; i++)
         {
+            
             // preenchendo a diagonal 
             //OBS: VAMOS TER QUE TESTAR SE O PESO EH 0 quando ordenar porque o peso 0 sempre vai ser o primeiro do vetor ordenado
             this->matrixData[i][i].second = 0;
-            this->matrixData[i][i].first = i;
-            while (contador < i)
-            { 
-                ss >> x;
-                printf("contador %u , i: %u \n",contador,i);
-                // colocando os dados primeiro na coluna
-                this->matrixData[contador][linha].second = x;
-                this->matrixData[contador][linha].first = contador;
-                // agora na parte transtposta (na linha)
-                this->matrixData[linha][contador].second = x;
-                this->matrixData[linha][contador].first = contador;
+            this->matrixData[i][i].first = i;         
 
-                contador++;
+            for (unsigned int j = i+1; j < this->nodeNumber; j++)
+            { 
+                ss >> x;               
+                // colocando os dados na parte da linha
+                this->matrixData[i][j].second = x;
+                this->matrixData[i][j].first = i;
+
+                // colocando os dados da parte transtposta
+                this->matrixData[j][i].second = x;
+                this->matrixData[j][i].first = j;
+
                 if( x > maior)
                 {
                     maior = x;
                 }
             }
-            linha++;
-            contador = linha + 1;
+            
         }
+        this->sortedMatrixData = this->constructSortedMatrix(this->matrixData);
     }
+    std::cout<<"last x: "<< x << " num nodes "<< this->nodeNumber <<std::endl;
     std::cout<<"Maior: "<< maior <<" First = "<<this->matrixData[0][0].second<<" Last = "<< this->matrixData.back().back().second << std::endl;
     return true;
+}
+
+// retornando uma cópia do vetor da matriz original
+std::vector < std::pair<int,int>> matrixRepresentation::getNeighbours(int node)
+{
+    return std::vector<std::pair<int,int>>(this->matrixData[node]);
+}
+
+// retornando uma cópia do vetor da matriz original ordenado 
+std::vector < std::pair<int,int>> matrixRepresentation::getSortedNeighbours(int node)
+{
+    return std::vector<std::pair<int,int>>(this->sortedMatrixData[node]);
+}
+
+// construindo a matriz com a vizinhança ordenada
+std::vector < std::vector < std::pair<int,int> > > matrixRepresentation::constructSortedMatrix(std::vector < std::vector < std::pair<int,int> > > originalM)
+{
+    std::vector < std::vector < std::pair<int,int> > > sorted(originalM.size());
+
+    for(unsigned int i = 0; i < originalM.size(); i++) 
+    {
+        // fazendo uma cópia do vetor linha da matriz original
+        sorted[i] = std::vector< std::pair<int,int>> (originalM[i].begin(),originalM[i].end());
+        // fazendo o sort do vetor "sorted" , passando o inicio e o fim do vetor, além de uma funçao de comparação
+        std::sort( sorted[i].begin(),sorted[i].end(), [](std::pair<int,int> a, std::pair<int,int> b) {
+        return a.second > b.second;   
+        } );
+    }
+
+    return sorted;
 }
 
