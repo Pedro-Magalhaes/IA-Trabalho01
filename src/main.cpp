@@ -4,7 +4,7 @@
 #include <string>
 #include <cerrno>
 #include <fstream>
-
+#include <sstream>
 #include "matrixRepresentation.h"
 
 /*
