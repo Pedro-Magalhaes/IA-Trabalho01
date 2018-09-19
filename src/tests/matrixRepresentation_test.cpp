@@ -54,17 +54,11 @@ int main (void)
     
     for (size_t i = 0; i < 5; i++)
     {   
-        for (size_t j = i; j < 5; j++)
+        myMatrix[i][i] = 0;
+        for (size_t j = i+1; j < 5; j++)
         {
-            if( i != j) 
-            {
-                myMatrix[i][j] = j+1;
-                myMatrix[j][i] = j+1;
-            }
-            else
-            {
-                myMatrix[i][j] = 0;
-            }            
+            myMatrix[i][j] = abs(i-j) ;
+            myMatrix[j][i] = abs(i-j);                
         }
     }
     std::cout<<"test matrix :"<<std::endl;

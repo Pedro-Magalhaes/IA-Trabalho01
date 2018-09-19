@@ -1,11 +1,44 @@
 #include "Solver.h"
+#include <random>
+#include <algorithm>
+#include <chrono>
+std::vector<int> Solver::generateRandomSolution()
+{
+	// Criando um vector com tamanho n+1 que vai e volta do deposito (cidade 0)
+	std::vector<int> a = std::vector<int>(this->_node_number + 1);
+	for (int i = 0; i < this->_node_number; i++)
+	{
+		a[i] = i;
+	}
+	//std::random_shuffle(a.begin() + 1, a.end() - 1);
+	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+
+	//+1 no inicio para tirar o deposito e -1 ao final com o mesmo proposito
+	std::shuffle(a.begin() + 1, a.end() - 1, std::default_random_engine(seed));
+	a[this->_node_number] = 0;
+	return a;
+}
+
+int Solver::funcaoObjetiva(std::vector<int>& sol)
+{
+	int soma = 0;
+	int latencia = 0;
+	for (int i = 0; i < sol.size()-1; i++)
+	{
+		//printf("peso from %d to %d: %d\n", sol[i], sol[i + 1], _m.nodeAt(sol[i], sol[i + 1]).second);
+		soma += _m.nodeAt(sol[i], sol[i + 1]).second ;
+		latencia += soma;
+	}
+	return latencia;
+}
 
 Solver::Solver()
 {
 
 }
-Solver::Solver(int n)
+Solver::Solver(int n, matrixRepresentation & m)
 {
+	_m = m;
 	_node_number = n;
 	_finalSolution.resize(n + 1);
 }
@@ -15,12 +48,95 @@ std::vector<int> Solver::BAHIA()
 {
 	return std::vector<int>();
 }
+std::vector<std::vector<int>> Solver::CalculaVizinhanca(std::vector<int> &sol)
+{
+	int i1, i2;
+	std::vector<std::vector<int>> vizinhanca(sol.size()*sol.size());
+	for (int i = 0; i < sol.size()*sol.size(); i++)
+	{
+		// TODO: fazer uma vizinhaça olhando o elemento e ver qual a menor aresta, tentando posiciona-lo ao lado desse vizinho
+		vizinhanca[i] = std::vector<int >(sol);
+		for (int j = 0; j < 3; j++)
+		{
+			int var = sol.size() - 2;
+			i1 = std::rand() % var + 1;
+			i2 = std::rand() % var + 1;
+			int aux = vizinhanca[i][i1];
+			vizinhanca[i][i1] = vizinhanca[i][i2];
+			vizinhanca[i][i2] = aux;
 
+			if (i1 == 0 || i1 == sol.size() - 1 || i2 == 0 || i2 == sol.size() - 1)
+			{
+				printf("erro no indice randomico %d\n", i1);
+			}
+		}
+	}
+		
+
+
+	return vizinhanca;
+}
 //Implementa uma Busca Local (Hill Climbing??)
 std::vector<int> Solver::BuscaLocal()
 {
-	return std::vector<int>();
+	std::vector<int> inicialSolution;
+	std::vector<int> currentSolution;
+	std::vector<int> bestSolution;
+	inicialSolution = generateRandomSolution();
+	//for (int i = 0; i < this->_node_number; i++)
+	//{
+	//	printf(" %d, ", inicialSolution[i]);
+	//}
+	//printf("\n");
+	//printf("fo: %d\n", funcaoObjetiva(inicialSolution));
+	
+	
+	//printf("solucao inicial = %d \n", min);
+	int rodadas = 0;
+	int count = 0;
+	int min, minAnterior,best;
+	currentSolution = inicialSolution;
+	bestSolution = currentSolution;
+	best = funcaoObjetiva(currentSolution);
+	for (int j = 0; j < 6; j++)
+	{
+		while (count < 100) {
+			min = funcaoObjetiva(currentSolution);
+			minAnterior = min;
+			std::vector<std::vector<int>> vz = CalculaVizinhanca(currentSolution);
+			for (int i = 0; i < vz.size(); i++)
+			{
+				int valor = funcaoObjetiva(vz[i]);
+				if (valor < min)
+				{
+					min = valor;
+					currentSolution = vz[i];
+				}
+			}
+			if (min == minAnterior) {
+				count++;
+			}
+			rodadas++;
+			}
+		if (best > min) {
+			best = min;
+			bestSolution = currentSolution;
+		}
+		count = 0;
+		currentSolution = generateRandomSolution();
+	}
+	
+
+	
+	printf("menor vz = %d rodadas: %d\n", best,rodadas);
+
+
+
+
+	return inicialSolution;
 }
+
+
 
 
 Solver::~Solver()

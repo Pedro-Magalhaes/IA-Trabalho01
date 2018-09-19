@@ -5,6 +5,8 @@
 #include <cerrno>
 #include <fstream>
 #include <sstream>
+
+#include "Solver.h"
 #include "matrixRepresentation.h"
 
 /*
@@ -105,15 +107,16 @@ int getProblemData(unsigned int &size, MatrixType &mType, std::string &text)
 int main()
 {
 
-    std::vector<std::string> files = {"dataset/brazil58.tsp", "dataset/dantzig42.tsp" ,"dataset/gr48.tsp","dataset/gr120.tsp","dataset/pa561.tsp"};
-
+    std::vector<std::string> files = {"dataset/brazil58.tsp"/*, "dataset/dantzig42.tsp" ,"dataset/gr48.tsp","dataset/gr120.tsp","dataset/pa561.tsp"*/};
+	unsigned int nodeNumber = 0;
+	matrixRepresentation *problemMatrix;
     for (size_t i = 0; i < files.size(); i++)
     {
 
         std::string fileContent = "";
         int beginOfMatrixPos = 0;
-        matrixRepresentation *problemMatrix;
-        unsigned int nodeNumber = 0;
+        
+        
         std::string problemDescription;
         std::string problemData;
         MatrixType m;
@@ -133,10 +136,13 @@ int main()
         {
             std::cerr << e.what() << '\n';
         }
-        
         problemMatrix = new matrixRepresentation(nodeNumber, m);
         problemMatrix->readMatrixData(problemData);
     }
+	Solver s(nodeNumber,*problemMatrix);
+
+	std::vector<int> aux = s.BuscaLocal();
+	
 
     return 0;
 }
