@@ -30,6 +30,11 @@ matrixRepresentation::matrixRepresentation(const matrixRepresentation &other)
     this->nodeNumber = other.nodeNumber;
 }
 
+unsigned int matrixRepresentation::getNodeNumber()
+{
+	return this->nodeNumber;
+}
+
 matrixRepresentation::~matrixRepresentation()
 {
 }

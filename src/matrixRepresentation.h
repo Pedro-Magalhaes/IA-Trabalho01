@@ -11,10 +11,12 @@ class matrixRepresentation
   private:
       std::vector < std::vector < std::pair<int,int> > > constructSortedMatrix(std::vector < std::vector < std::pair<int,int> > > originalM);
   public:
+	  
     matrixRepresentation(){}
     matrixRepresentation(unsigned int n); // n = number of nodes
     matrixRepresentation(unsigned int n, MatrixType m); 
     matrixRepresentation(const matrixRepresentation & other);
+	unsigned int getNodeNumber();
     bool readMatrixData ( std::string & matrixDataString );
     int valueat(const int line, const int col);
     std::vector < std::pair<int,int>> getNeighbours(int node);
