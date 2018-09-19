@@ -2,6 +2,10 @@
 #include <random>
 #include <algorithm>
 #include <chrono>
+
+
+
+
 std::vector<int> Solver::generateRandomSolution()
 {
 	// Criando um vector com tamanho n+1 que vai e volta do deposito (cidade 0)
@@ -127,6 +131,22 @@ std::vector<std::vector<int>> Solver::CalculaVizinhancakOpt(std::vector<int> &so
 	return vizinhanca;
 }
 
+std::vector<std::vector<int>> Solver::CalculaVizinhanca(std::vector<int> &sol)
+{
+	int numero = std::rand() % 102;
+	if (numero < 102)
+	{
+		return CalculaVizinhancaSwap(sol);
+	}
+	else if (numero < 103)
+	{
+		return CalculaVizinhancaRelocate(sol);
+	}
+	else
+	{
+		return CalculaVizinhancakOpt(sol,2);
+	}
+}
 
 //Implementa uma Busca Local (Hill Climbing??)
 std::vector<int> Solver::BuscaLocal()
@@ -158,7 +178,7 @@ std::vector<int> Solver::BuscaLocal()
 		{
 			min = funcaoObjetiva(currentSolution);
 			minAnterior = min;
-			std::vector<std::vector<int>> vz = CalculaVizinhancaSwap(currentSolution);
+			std::vector<std::vector<int>> vz = CalculaVizinhanca(currentSolution);
 			for (int i = 0; i < vz.size(); i++)
 			{
 				int valor = funcaoObjetiva(vz[i]);
@@ -170,30 +190,7 @@ std::vector<int> Solver::BuscaLocal()
 			}
 			if (min == minAnterior)
 			{
-				vz = CalculaVizinhancaRelocate(currentSolution);
-				for (int i = 0; i < vz.size(); i++)
-				{
-					int valor = funcaoObjetiva(vz[i]);
-					if (valor < min)
-					{
-						min = valor;
-						currentSolution = vz[i];
-					}
-				}
-				if (min == minAnterior)
-				{
-					vz = CalculaVizinhancakOpt(currentSolution);
-					for (int i = 0; i < vz.size(); i++)
-					{
-						int valor = funcaoObjetiva(vz[i]);
-						if (valor < min)
-						{
-							min = valor;
-							currentSolution = vz[i];
-						}
-					}
-					count++;
-				}
+				count++;
 			}
 			rodadas++;
 		}
@@ -219,8 +216,39 @@ std::vector<int> Solver::BuscaLocal()
 
 	return inicialSolution;
 }
+// k = limite de profundidade TEMOS QUE CONSIDERAR QUE QUANDO ESTIVERMOS NO NÓ DA POSIÇAO N-1 O PESO PARA CHEGAR NELE É:
+//O PESO DA ARESTA + O PESO DE CHEGAR DE VOLTA A 0 (DEPOT)
+int Solver::dfs_limitada(int s ,int currentDepth, int k ,std::vector<Color> & nodeStates )  //implementacao da dfs com limite de profundindade
+{
+	std::vector<int> P;
+	std::vector<Color> cor(nodeStates);
+	unsigned  int i;
 
+	P.push_back(s);
+	cor[s] = GRAY;
+	while (!P.empty())
+	{
 
+		s = P.back();
+		cor[s] = BLACK;
+		P.pop_back();
+		//std::cout << s << " ";
+		for (i = 0; i<G[s].size(); i++)
+		{
+			int u = G[s][i].v;
+			if (cor[u] == WHITE)
+			{
+				P.push_back(u);
+
+				cor[u] = GRAY;
+			}
+
+		}
+
+	}
+	//std::cout << std::endl;
+
+}
 
 
 Solver::~Solver()
