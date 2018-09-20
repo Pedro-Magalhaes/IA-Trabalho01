@@ -11,7 +11,15 @@ class matrixRepresentation
   private:
       std::vector < std::vector < std::pair<int,int> > > constructSortedMatrix(std::vector < std::vector < std::pair<int,int> > > originalM);
   public:
-	  
+    
+    struct edge
+    {
+        int from;
+        int to;
+        int weight;
+    };
+    
+
     matrixRepresentation(){}
     matrixRepresentation(unsigned int n); // n = number of nodes
     matrixRepresentation(unsigned int n, MatrixType m); 
@@ -23,6 +31,7 @@ class matrixRepresentation
     std::vector < std::pair<int,int>> getSortedNeighbours(int node); // retorna o vetor em ordem crescente, sem o proprio no que tem aresta 0
     std::pair<int,int> nodeAt(const int line, const int col);
     void printVector();
+    std::vector<matrixRepresentation::edge> getAllEdges();
     ~matrixRepresentation();
 
   private:

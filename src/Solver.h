@@ -9,9 +9,12 @@ class Solver
 private:
 	std::vector<int> generateRandomSolution();
 	int funcaoObjetiva(std::vector<int> & sol);
+	std::vector<matrixRepresentation::edge> getSortedEdges();
 public:
 	Solver();
 	Solver(int n,matrixRepresentation & m);
+	std::vector<int> solucaoGulosa();
+	std::vector<int> solucaoKruskalAdaptada();
 	std::vector<int> BAHIA();
 	std::vector<std::vector<int>> CalculaVizinhancaSwap(std::vector<int>& sol);
 	std::vector<std::vector<int>> CalculaVizinhancaRelocate(std::vector<int>& sol);
