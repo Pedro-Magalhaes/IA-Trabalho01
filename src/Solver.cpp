@@ -37,13 +37,15 @@ std::vector<int> Solver::solucaoKruskalAdaptada()
 {
 	unsigned int n = this->_node_number;
 	std::vector<matrixRepresentation::edge> arestasOrd = this->getSortedEdges();
-	std::vector<int> path;
+	std::vector<int> pathA;
+	std::vector<int> pathB;
 	std::vector<std::pair<int,int>> grau(n); // contabilizando o grau de cada vertice, max == 2
 	std::make_heap(arestasOrd.begin(),arestasOrd.end(),[] (matrixRepresentation::edge a,matrixRepresentation::edge b){
 		return a.weight > b.weight;
 	} );
 	UnionFind conected(n);
-	path.reserve(n+1);
+	pathA.reserve(n+1);
+	pathB.reserve(n+1);
 
 	std::vector<matrixRepresentation::edge> caminho;
 	caminho.reserve(n+1);
@@ -85,6 +87,7 @@ std::vector<int> Solver::solucaoKruskalAdaptada()
 			}
 		}		
 	}	
+	std::vector<matrixRepresentation::edge> aux(caminho);
 
 	std::sort( caminho.begin(),caminho.end(),[] (matrixRepresentation::edge a,matrixRepresentation::edge b){
 		if(a.from < b.from)
@@ -97,7 +100,20 @@ std::vector<int> Solver::solucaoKruskalAdaptada()
 		}
 		
 		return false ;
-		} );
+	} );
+
+	std::sort( aux.begin(),aux.end(),[] (matrixRepresentation::edge a,matrixRepresentation::edge b){
+		if(a.to < b.to)
+		{
+			return true;	
+		}
+		if (a.to == b.to)
+		{
+			return a.weight < b.weight;
+		}
+		
+		return false ;
+	} );
 	
 	// for(int i = 0; i < caminho.size(); i++)
 	// {
@@ -113,23 +129,33 @@ std::vector<int> Solver::solucaoKruskalAdaptada()
 	// 	}
 	// }
 	currentEdge = caminho[0];
-	path.push_back(currentEdge.from);
+	pathA.push_back(currentEdge.from);
 	count = 1;
 	while(count < n+1)
 	{
-		path.push_back(currentEdge.to);
+		pathA.push_back(currentEdge.to);
 		currentEdge = caminho[currentEdge.to];
 		count++;
 	}
 
-	for(int i = 0; i < path.size(); i++)
-	{
-		printf(" %d >",path[i]);
-	}
-	printf("\n");
-	printf("peso caminho: %d\n",this->funcaoObjetiva(path));
+	// for(int i = 0; i < path.size(); i++)
+	// {
+	// 	printf(" %d >",path[i]);
+	// }
+	// printf("\n");
+	// printf("peso caminho ord por from: %d\n",this->funcaoObjetiva(pathA));
 
-	return path;
+	currentEdge = aux[0];
+	pathB.push_back(currentEdge.to);
+	count = 1;
+	while(count < n+1)
+	{
+		pathB.push_back(currentEdge.from);
+		currentEdge = aux[currentEdge.from];
+		count++;
+	}
+	// printf("peso caminho ord por to: %d\n",this->funcaoObjetiva(pathB));
+	return this->funcaoObjetiva(pathB) < funcaoObjetiva(pathA)? pathB : pathA;
 }
 
 
@@ -137,7 +163,7 @@ std::vector<int> Solver::solucaoGulosa()
 {
 	std::vector<bool> isInSolucao(this->_node_number + 1,false);
 	std::vector<int> solucao(this->_node_number + 1);
-	int countSolucao; // numero de nos na solucao
+	int countSolucao = 0; // numero de nos na solucao
 	
 	// incluindo o deposito na soluçao
 	solucao[0] = 0;
@@ -309,7 +335,7 @@ std::vector<int> Solver::BuscaLocal()
 	std::vector<int> inicialSolution;
 	std::vector<int> currentSolution;
 	std::vector<int> bestSolution;
-	inicialSolution = generateRandomSolution();
+	inicialSolution = this->solucaoKruskalAdaptada();//;generateRandomSolution();
 	std::vector<int> test = {0,1,2,3,4,5,0};
 	CalculaVizinhancakOpt(test, 2);
 	//for (int i = 0; i < this->_node_number; i++)
@@ -327,11 +353,12 @@ std::vector<int> Solver::BuscaLocal()
 	currentSolution = inicialSolution;
 	bestSolution = currentSolution;
 	best = funcaoObjetiva(currentSolution);
-	for (int j = 0; j < 50; j++)
+	for (int j = 0; j < 1; j++)
 	{
-		while (count < 5)
+		while (count < 10)
 		{
 			min = funcaoObjetiva(currentSolution);
+			printf("partial sol: %d\n",min);
 			minAnterior = min;
 			std::vector<std::vector<int>> vz = CalculaVizinhancaSwap(currentSolution);
 			for (int i = 0; i < vz.size(); i++)

@@ -141,10 +141,10 @@ int main()
     }
 	Solver s(nodeNumber,*problemMatrix);
 
-	//std::vector<int> aux = s.BuscaLocal();
+	std::vector<int> aux = s.BuscaLocal();
 
     //std::vector<int> aux = s.solucaoGulosa();
-    std::vector<int> aux = s.solucaoKruskalAdaptada();
+    //std::vector<int> aux = s.solucaoKruskalAdaptada();
 	
 
     return 0;
