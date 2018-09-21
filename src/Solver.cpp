@@ -1,8 +1,10 @@
 #include "Solver.h"
 #include <random>
 #include <algorithm>
+#include <iostream>
 #include <chrono>
 #include "unionfind.h"
+#include "math.h"
 
 // Gera uma solução randomica para o problema
 std::vector<int> Solver::generateRandomSolution()
@@ -218,9 +220,43 @@ Solver::Solver(int n, matrixRepresentation & m)
 	_finalSolution.resize(n + 1);
 }
 
+void Solver::dfs(int s, int p) //busca por profundidade => acho que t
+{
+	//vetor de cores;
+	//pilha pra empilhar
+	//dfs-visit
+	std::vector<int> cor;
+	for (unsigned int i = 0; i<_m.getNodeNumber(); i++)
+		cor.push_back(WHITE);
+	dfs_visit(s, cor,p);
+	std::cout << "\n";
+
+}
+void Solver::dfs_visit(int u, std::vector<int>& cor,int p)
+{
+	std::cout << u << " ";
+	cor[u] = GRAY;
+	if (p == 0)
+	{
+		return;
+	}
+	for (int i = 0; i< _m.getNeighbours(u).size(); i++)
+	{
+		if (cor[_m.getNeighbours(u)[i].first] == WHITE)
+		{
+			p--;
+			dfs_visit(_m.getNeighbours(u)[i].first, cor,p);
+		}
+	}
+	cor[u] = BLACK;
+}
+
 //Implementa uma Busca com aprofundamento iterativo com poda
 std::vector<int> Solver::BAHIA()
 {
+	int i,p;
+	p = 3;
+	//recursivooooo
 	return std::vector<int>();
 }
 std::vector<std::vector<int>> Solver::CalculaVizinhancaSwap(std::vector<int> &sol)
@@ -230,7 +266,7 @@ std::vector<std::vector<int>> Solver::CalculaVizinhancaSwap(std::vector<int> &so
 	for (int i = 1; i < sol.size() - 1; i++)
 	{
 		// TODO: fazer uma vizinha�a olhando o elemento e ver qual a menor aresta, tentando posiciona-lo ao lado desse vizinho
-		for (int j = i; j < sol.size() - 1; j++)
+		for (int j = i+1; j < sol.size() - 1; j++)
 		{
 			std::vector<int >vAux(sol);
 			
@@ -301,7 +337,14 @@ std::vector<std::vector<int>> Solver::CalculaVizinhancakOpt(std::vector<int> &so
 
 	return vizinhanca;
 }
-
+void printasolucao(std::vector<int> v)
+{
+	for (int i = 0; i < v.size(); i++)
+	{
+		printf("%d ", v[i]);
+	}
+	printf("\n");
+}
 
 //Implementa uma Busca Local (Hill Climbing??)
 std::vector<int> Solver::BuscaLocal()
@@ -309,7 +352,7 @@ std::vector<int> Solver::BuscaLocal()
 	std::vector<int> inicialSolution;
 	std::vector<int> currentSolution;
 	std::vector<int> bestSolution;
-	inicialSolution = generateRandomSolution();
+	inicialSolution = solucaoKruskalAdaptada();
 	std::vector<int> test = {0,1,2,3,4,5,0};
 	CalculaVizinhancakOpt(test, 2);
 	//for (int i = 0; i < this->_node_number; i++)
@@ -327,9 +370,9 @@ std::vector<int> Solver::BuscaLocal()
 	currentSolution = inicialSolution;
 	bestSolution = currentSolution;
 	best = funcaoObjetiva(currentSolution);
-	for (int j = 0; j < 50; j++)
+	for (int j = 0; j < 10; j++)
 	{
-		while (count < 5)
+		while (count < 1)
 		{
 			min = funcaoObjetiva(currentSolution);
 			minAnterior = min;
@@ -377,7 +420,6 @@ std::vector<int> Solver::BuscaLocal()
 			best = min;
 			bestSolution = currentSolution;
 		}
-		count = 0;
 		currentSolution = generateRandomSolution();
 	}
 	
@@ -392,9 +434,116 @@ std::vector<int> Solver::BuscaLocal()
 
 
 
-	return inicialSolution;
+	return bestSolution;
 }
+//Implementa Simulated Annealing
+std::vector<int> Solver::SimAnn()
+{
+	std::vector<int> inicialSolution;
+	std::vector<int> currentSolution;
+	std::vector<int> bestSolution;
+	inicialSolution = solucaoKruskalAdaptada();
+	std::vector<int> test = { 0,1,2,3,4,5,0 };
+	CalculaVizinhancakOpt(test, 2);
+	//for (int i = 0; i < this->_node_number; i++)
+	//{
+	//	printf(" %d, ", inicialSolution[i]);
+	//}
+	//printf("\n");
+	//printf("fo: %d\n", funcaoObjetiva(inicialSolution));
 
+
+	//printf("solucao inicial = %d \n", min);
+	int rodadas = 0;
+	int count = 0;
+	int min, minAnterior, best;
+	float coolingRate = 0.002;
+	currentSolution = inicialSolution;
+	bestSolution = currentSolution;
+	best = funcaoObjetiva(currentSolution);
+	//for (int j = 0; j < 10; j++)
+	//{
+		double T = 10000;
+		while (T > 1)
+		{
+			min = funcaoObjetiva(currentSolution);
+			minAnterior = min;
+			std::vector<std::vector<int>> vz = CalculaVizinhancaSwap(currentSolution);
+			for (int i = 0; i < vz.size(); i++)
+			{
+				int valor = funcaoObjetiva(vz[i]);
+				if (valor < min)
+				{
+					min = valor;
+					currentSolution = vz[i];
+				}
+				else
+				{
+					float deltaE = valor - min;
+					float p;
+					float aux = (-deltaE) / T;
+					p = exp(aux);
+					float num = (float)rand() / (RAND_MAX / 100.0);
+					//Se tiver dentro da probabilidade aceita vizinho pior
+					if (num <= p * 100)
+					{
+						min = valor;
+						currentSolution = vz[i];
+						break;
+					}
+				}
+			}
+			if (min == minAnterior)
+			{
+				vz = CalculaVizinhancaRelocate(currentSolution);
+				for (int i = 0; i < vz.size(); i++)
+				{
+					int valor = funcaoObjetiva(vz[i]);
+					if (valor < min)
+					{
+						min = valor;
+						currentSolution = vz[i];
+					}
+
+				}
+				if (min == minAnterior)
+				{
+					vz = CalculaVizinhancakOpt(currentSolution);
+					for (int i = 0; i < vz.size(); i++)
+					{
+						int valor = funcaoObjetiva(vz[i]);
+						if (valor < min)
+						{
+							min = valor;
+							currentSolution = vz[i];
+						}
+					}
+				}
+			}
+		rodadas++;
+		if (best > min)
+		{
+			best = min;
+			bestSolution = currentSolution;
+		}
+		T *= 1 - coolingRate;
+		//printf("T: %lf\n", T);
+
+	}
+	currentSolution = generateRandomSolution();
+
+
+	//	std::sort(bestSolution.begin(), bestSolution.end());
+	printf("menor vz = %d rodadas: %d\n", best, rodadas);
+	printf("Vetor Encontrado:\n");
+	for (auto i = 0; i < bestSolution.size(); i++)
+	{
+		printf(" %d -> ", bestSolution[i]);
+	}
+
+
+	return bestSolution;
+}
 
 
 

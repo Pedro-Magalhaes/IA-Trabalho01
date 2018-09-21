@@ -25,6 +25,7 @@ class matrixRepresentation
     matrixRepresentation(unsigned int n, MatrixType m); 
     matrixRepresentation(const matrixRepresentation & other);
 	unsigned int getNodeNumber();
+	unsigned int getNumberNeighbours(int i);
     bool readMatrixData ( std::string & matrixDataString );
     int valueat(const int line, const int col);
     std::vector < std::pair<int,int>> getNeighbours(int node);

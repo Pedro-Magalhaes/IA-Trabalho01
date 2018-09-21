@@ -62,6 +62,11 @@ unsigned int matrixRepresentation::getNodeNumber()
 	return this->nodeNumber;
 }
 
+unsigned int matrixRepresentation::getNumberNeighbours(int i)
+{
+	return this->sortedMatrixData[i].size();
+}
+
 matrixRepresentation::~matrixRepresentation()
 {
 }
