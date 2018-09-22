@@ -10,7 +10,7 @@ private:
 	std::vector<int> generateRandomSolution();
 	int funcaoObjetiva(std::vector<int> & sol);
 	std::vector<matrixRepresentation::edge> getSortedEdges();
-	std::vector<int> Solver::TwoOptSwap(const std::vector<int>& currentSol, int i, int k);
+	std::vector<int> TwoOptSwap(const std::vector<int>& currentSol, int i, int k);
 public:
 	Solver();
 	Solver(int n,matrixRepresentation & m);
