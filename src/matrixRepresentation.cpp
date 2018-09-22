@@ -23,6 +23,33 @@ matrixRepresentation::matrixRepresentation(unsigned int n, MatrixType m)
     nodeNumber = n;
 }
 
+// retorna todos as arestas do grafo
+std::vector<matrixRepresentation::edge> matrixRepresentation::getAllEdges()
+{
+    std::vector<matrixRepresentation::edge> arestas;
+    unsigned int n = this->nodeNumber;
+    arestas.reserve(n*(n-1)/2); // reservando sem inicializar (push fica otimizado)
+    
+    for(unsigned int i = 0; i < n; i++)
+    {
+        for(unsigned int j = 0; j < n; j++)
+        {
+            if(i!=j)
+            {
+                edge e;
+                e.from = i;
+                e.to = j;
+                e.weight = this->matrixData[i][j].second;
+                arestas.emplace_back(e);
+            }
+            
+        }
+    }
+    return arestas;
+    
+
+}
+
 matrixRepresentation::matrixRepresentation(const matrixRepresentation &other)
 {
     this->matrixData = other.matrixData;
@@ -33,6 +60,11 @@ matrixRepresentation::matrixRepresentation(const matrixRepresentation &other)
 unsigned int matrixRepresentation::getNodeNumber()
 {
 	return this->nodeNumber;
+}
+
+unsigned int matrixRepresentation::getNumberNeighbours(int i)
+{
+	return this->sortedMatrixData[i].size();
 }
 
 matrixRepresentation::~matrixRepresentation()
@@ -94,11 +126,11 @@ bool matrixRepresentation::readMatrixData(std::string &matrixDataString)
                 ss >> x;               
                 // colocando os dados na parte da linha
                 this->matrixData[i][j].second = x;
-                this->matrixData[i][j].first = i;
+                this->matrixData[i][j].first = j;
 
                 // colocando os dados da parte transtposta
                 this->matrixData[j][i].second = x;
-                this->matrixData[j][i].first = j;
+                this->matrixData[j][i].first = i;
 
                 if( x > maior)
                 {
@@ -137,7 +169,7 @@ std::vector < std::vector < std::pair<int,int> > > matrixRepresentation::constru
         sorted[i] = std::vector< std::pair<int,int>> (originalM[i].begin(),originalM[i].end());
         // fazendo o sort do vetor "sorted" , passando o inicio e o fim do vetor, além de uma funçao de comparação
         std::sort( sorted[i].begin(),sorted[i].end(), [](std::pair<int,int> a, std::pair<int,int> b) {
-        return a.second > b.second;   
+        return a.second < b.second;   
         } );
     }
 
