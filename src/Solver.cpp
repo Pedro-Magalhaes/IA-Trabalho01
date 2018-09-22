@@ -1,8 +1,10 @@
 #include "Solver.h"
 #include <random>
 #include <algorithm>
+#include <iostream>
 #include <chrono>
 #include "unionfind.h"
+#include "math.h"
 
 // Gera uma solução randomica para o problema
 std::vector<int> Solver::generateRandomSolution()
@@ -42,34 +44,34 @@ std::vector<int> Solver::solucaoKruskalAdaptada()
 	std::vector<std::pair<int,int>> grau(n); // contabilizando o grau de cada vertice, max == 2
 	std::make_heap(arestasOrd.begin(),arestasOrd.end(),[] (matrixRepresentation::edge a,matrixRepresentation::edge b){
 		return a.weight > b.weight;
-	} );
+	});
 	UnionFind conected(n);
 	pathA.reserve(n+1);
 	pathB.reserve(n+1);
 
 	std::vector<matrixRepresentation::edge> caminho;
-	caminho.reserve(n+1);
+	caminho.reserve(n + 1);
 
 	matrixRepresentation::edge currentEdge;
-	int pai_ori,pai_dest,count;
+	int pai_ori, pai_dest, count;
 	count = 0; // contador de quantas arestas foram adicionadas
-	while( (count < n+1) && (arestasOrd.size() > 0) )
+	while ((count < n + 1) && (arestasOrd.size() > 0))
 	{
 		currentEdge = arestasOrd.front(); // pegando a menor aresta
-		std::pop_heap(arestasOrd.begin(),arestasOrd.end(),[] (matrixRepresentation::edge a,matrixRepresentation::edge b){
-		return a.weight > b.weight;
+		std::pop_heap(arestasOrd.begin(), arestasOrd.end(), [](matrixRepresentation::edge a, matrixRepresentation::edge b) {
+			return a.weight > b.weight;
 		});
 		arestasOrd.pop_back();// fazendo o pop
-		if(grau[ currentEdge.to ].second < 1 &&  grau[currentEdge.from].first < 1) // nao podemos ter nos com grau > 2
+		if (grau[currentEdge.to].second < 1 && grau[currentEdge.from].first < 1) // nao podemos ter nos com grau > 2
 		{
 			pai_ori = conected.find(currentEdge.from);
 			pai_dest = conected.find(currentEdge.to);
-			
-			if(count < n-1) // impedindo a formacao do ciclo
+
+			if (count < n - 1) // impedindo a formacao do ciclo
 			{
-				if(pai_ori != pai_dest) // sao de componetes conexas distintas
+				if (pai_ori != pai_dest) // sao de componetes conexas distintas
 				{
-					conected.makeUnion(pai_ori,pai_dest);
+					conected.makeUnion(pai_ori, pai_dest);
 					caminho.push_back(currentEdge);
 					count++;
 					grau[currentEdge.from].first++;
@@ -78,21 +80,20 @@ std::vector<int> Solver::solucaoKruskalAdaptada()
 			}
 			else // vai ser o ultimo no e vai fechar o caminho (e ciclo)
 			{
-				conected.makeUnion(pai_ori,pai_dest);
+				conected.makeUnion(pai_ori, pai_dest);
 				caminho.push_back(currentEdge);
 				count++;
 				grau[currentEdge.from].first++;
 				grau[currentEdge.to].second++;
-				printf("alo\n");
 			}
 		}		
 	}	
 	std::vector<matrixRepresentation::edge> aux(caminho);
 
-	std::sort( caminho.begin(),caminho.end(),[] (matrixRepresentation::edge a,matrixRepresentation::edge b){
-		if(a.from < b.from)
+	std::sort(caminho.begin(), caminho.end(), [](matrixRepresentation::edge a, matrixRepresentation::edge b) {
+		if (a.from < b.from)
 		{
-			return true;	
+			return true;
 		}
 		if (a.from == b.from)
 		{
@@ -131,7 +132,7 @@ std::vector<int> Solver::solucaoKruskalAdaptada()
 	currentEdge = caminho[0];
 	pathA.push_back(currentEdge.from);
 	count = 1;
-	while(count < n+1)
+	while (count < n + 1)
 	{
 		pathA.push_back(currentEdge.to);
 		currentEdge = caminho[currentEdge.to];
@@ -244,19 +245,56 @@ Solver::Solver(int n, matrixRepresentation & m)
 	_finalSolution.resize(n + 1);
 }
 
+void Solver::dfs(int s, int p) //busca por profundidade => acho que t
+{
+	//vetor de cores;
+	//pilha pra empilhar
+	//dfs-visit
+	std::vector<int> cor;
+	for (unsigned int i = 0; i<_m.getNodeNumber(); i++)
+		cor.push_back(WHITE);
+	dfs_visit(s, cor,p);
+	std::cout << "\n";
+
+}
+void Solver::dfs_visit(int u, std::vector<int>& cor,int p)
+{
+	std::cout << u << " ";
+	cor[u] = GRAY;
+	if (p == 0)
+	{
+		return;
+	}
+	for (int i = 0; i< _m.getNeighbours(u).size(); i++)
+	{
+		if (cor[_m.getNeighbours(u)[i].first] == WHITE)
+		{
+			p--;
+			dfs_visit(_m.getNeighbours(u)[i].first, cor,p);
+		}
+	}
+	cor[u] = BLACK;
+}
+
 //Implementa uma Busca com aprofundamento iterativo com poda
 std::vector<int> Solver::BAHIA()
 {
+	int i,p;
+	p = 3;
+	//recursivooooo
 	return std::vector<int>();
 }
-std::vector<std::vector<int>> Solver::CalculaVizinhancaSwap(std::vector<int> &sol)
+std::vector<std::vector<int>> Solver::CalculaVizinhancaSwap(std::vector<int> &sol, int limit)
 {
-
+	if (limit == 0)
+	{
+		limit = this->_node_number;
+	}
 	std::vector<std::vector<int>> vizinhanca;
-	for (int i = 1; i < sol.size() - 1; i++)
+	for (int i = 1; i < limit+1; i++)
 	{
 		// TODO: fazer uma vizinha�a olhando o elemento e ver qual a menor aresta, tentando posiciona-lo ao lado desse vizinho
-		for (int j = i; j < sol.size() - 1; j++)
+		for (int j = i+1; j < limit; j++)
 		{
 			std::vector<int >vAux(sol);
 			
@@ -269,7 +307,7 @@ std::vector<std::vector<int>> Solver::CalculaVizinhancaSwap(std::vector<int> &so
 	}
 		
 
-
+	/*printf("Numero de vizinhos retornado:%d\n", vizinhanca.size());*/
 	return vizinhanca;
 }
 
@@ -302,32 +340,58 @@ std::vector<std::vector<int>> Solver::CalculaVizinhancaRelocate(std::vector<int>
 	return vizinhanca;
 }
 
-
-std::vector<std::vector<int>> Solver::CalculaVizinhancakOpt(std::vector<int> &sol,int k)
+std::vector < int> Solver::TwoOptSwap(const std::vector<int> & currentSol, int i, int k)
 {
-
-	std::vector<std::vector<int>> vizinhanca;
-	for (int i = 1; i < sol.size() - k; i++) 
+	//take route[1] to route[i - 1] and add them in order to new_route
+	//	2. take route[i] to route[k] and add them in reverse order to new_route
+	//	3. take route[k + 1] to end and add them in order to new_route
+	std::vector < int > vizinho(currentSol);
+	int count = 0;
+	for (int j = i; j <= k; j++)
 	{
-		std::vector<int > vAux(sol);
-		int count = 1;
-		for (int j = i; j < i + k; j++)
-		{
-			vAux[j] = sol[i + k - count];
-				count++;
-		}
-		/*for (int t = 0; t < vAux.size(); t++)
-		{
-			printf(" %d ", vAux[t]);
-		}
-		printf("\n\n");*/
+		vizinho[j] = currentSol[ k - count];
+		count++;
 	}
+	return vizinho;
+}
 
 
+std::vector<std::vector<int>> Solver::CalculaVizinhancakOpt(std::vector<int> &sol,int r)
+{
+	unsigned int n = sol.size();
+	std::vector<std::vector<int>> vizinhanca;
+	//for (int i = 1; i < sol.size() - k; i++) 
+	//{
+	//	std::vector<int > vAux(sol);
+	//	int count = 1;
+	//	for (int j = i; j < i + k; j++)
+	//	{
+	//		vAux[j] = sol[i + k - count];
+	//			count++;
+	//	}
+	//	/*for (int t = 0; t < vAux.size(); t++)
+	//	{
+	//		printf(" %d ", vAux[t]);
+	//	}
+	//	printf("\n\n");*/
+	//}
+
+	for (int i = 1; i < n - 2; i++) {
+		for (int k = i + 1; k < n-1 ; k++) {
+			vizinhanca.emplace_back(TwoOptSwap(sol, i, k));
+		}
+	}
 
 	return vizinhanca;
 }
-
+void printasolucao(std::vector<int> v)
+{
+	for (int i = 0; i < v.size(); i++)
+	{
+		printf("%d ", v[i]);
+	}
+	printf("\n");
+}
 
 //Implementa uma Busca Local (Hill Climbing??)
 std::vector<int> Solver::BuscaLocal()
@@ -335,9 +399,9 @@ std::vector<int> Solver::BuscaLocal()
 	std::vector<int> inicialSolution;
 	std::vector<int> currentSolution;
 	std::vector<int> bestSolution;
-	inicialSolution = this->solucaoKruskalAdaptada();//;generateRandomSolution();
+	inicialSolution = solucaoKruskalAdaptada();
 	std::vector<int> test = {0,1,2,3,4,5,0};
-	CalculaVizinhancakOpt(test, 2);
+	//CalculaVizinhancakOpt(test, 2);
 	//for (int i = 0; i < this->_node_number; i++)
 	//{
 	//	printf(" %d, ", inicialSolution[i]);
@@ -353,14 +417,15 @@ std::vector<int> Solver::BuscaLocal()
 	currentSolution = inicialSolution;
 	bestSolution = currentSolution;
 	best = funcaoObjetiva(currentSolution);
-	for (int j = 0; j < 1; j++)
+	for (int j = 0; j < 10; j++)
 	{
-		while (count < 10)
+		while (count < 1)
 		{
+			printf(".\n");
 			min = funcaoObjetiva(currentSolution);
 			printf("partial sol: %d\n",min);
 			minAnterior = min;
-			std::vector<std::vector<int>> vz = CalculaVizinhancaSwap(currentSolution);
+			std::vector<std::vector<int>> vz = CalculaVizinhancakOpt(currentSolution); //CalculaVizinhancaSwap(currentSolution);
 			for (int i = 0; i < vz.size(); i++)
 			{
 				int valor = funcaoObjetiva(vz[i]);
@@ -372,7 +437,7 @@ std::vector<int> Solver::BuscaLocal()
 			}
 			if (min == minAnterior)
 			{
-				vz = CalculaVizinhancaRelocate(currentSolution);
+				/*vz = CalculaVizinhancaRelocate(currentSolution);
 				for (int i = 0; i < vz.size(); i++)
 				{
 					int valor = funcaoObjetiva(vz[i]);
@@ -381,10 +446,10 @@ std::vector<int> Solver::BuscaLocal()
 						min = valor;
 						currentSolution = vz[i];
 					}
-				}
+				}*/
 				if (min == minAnterior)
 				{
-					vz = CalculaVizinhancakOpt(currentSolution);
+					/*vz = CalculaVizinhancakOpt(currentSolution);
 					for (int i = 0; i < vz.size(); i++)
 					{
 						int valor = funcaoObjetiva(vz[i]);
@@ -393,7 +458,7 @@ std::vector<int> Solver::BuscaLocal()
 							min = valor;
 							currentSolution = vz[i];
 						}
-					}
+					}*/
 					count++;
 				}
 			}
@@ -404,7 +469,6 @@ std::vector<int> Solver::BuscaLocal()
 			best = min;
 			bestSolution = currentSolution;
 		}
-		count = 0;
 		currentSolution = generateRandomSolution();
 	}
 	
@@ -419,9 +483,139 @@ std::vector<int> Solver::BuscaLocal()
 
 
 
-	return inicialSolution;
+	return bestSolution;
 }
+//Implementa Simulated Annealing
+std::vector<int> Solver::SimAnn()
+{
+	std::vector<int> inicialSolution;
+	std::vector<int> currentSolution;
+	std::vector<int> bestSolution;
+	inicialSolution = solucaoKruskalAdaptada();
+	//std::vector<int> test = { 0,1,2,3,4,5,6,0 };
+	//std::vector<std::vector<int>> ga = CalculaVizinhancakOpt(test, 2);
 
+	//for (int i = 0; i < ga.size(); i++)
+	//{
+	//	printasolucao(ga[i]);
+	//}
+
+	//return bestSolution;
+	//for (int i = 0; i < this->_node_number; i++)
+	//{
+	//	printf(" %d, ", inicialSolution[i]);
+	//}
+	//printf("\n");
+	//printf("fo: %d\n", funcaoObjetiva(inicialSolution));
+
+
+	//printf("solucao inicial = %d \n", min);
+	int rodadas = 0;
+	int count = 0;
+	int min, minAnterior, best;
+	float coolingRate = 0.002;
+	currentSolution = inicialSolution;
+	bestSolution = currentSolution;
+	best = funcaoObjetiva(currentSolution);
+	//for (int j = 0; j < 10; j++)
+	//{
+		double T = 10000;
+		int cont = 0;
+		while (T > 1)
+		{
+			min = funcaoObjetiva(currentSolution);
+			minAnterior = min;
+			std::vector<std::vector<int>> vz = CalculaVizinhancakOpt(currentSolution, 2);
+			
+			for (int i = 0; i < vz.size(); i++)
+			{
+				int valor = funcaoObjetiva(vz[i]);
+				if (valor < min)
+				{
+					min = valor;
+					currentSolution = vz[i];
+					if (currentSolution.back() != 0)
+					{
+						printf("Erro kopt\n");
+					}
+				}
+				else
+				{
+					float deltaE = valor - min;
+					float p;
+					float aux = (-deltaE) / T;
+					p = exp(aux);
+					float num = (float)rand() / (RAND_MAX / 100.0);
+					//Se tiver dentro da probabilidade aceita vizinho pior
+					if (num <= p * 100)
+					{
+						min = valor;
+						currentSolution = vz[i];
+						cont++;
+						
+						break;
+					}
+				}
+			}
+			if (min == minAnterior)
+			{
+				vz = CalculaVizinhancaSwap(currentSolution);
+				for (int i = 0; i < vz.size(); i++)
+				{
+					int valor = funcaoObjetiva(vz[i]);
+					if (valor < min)
+					{
+						min = valor;
+						currentSolution = vz[i];
+						if (currentSolution.back() != 0)
+						{
+							printf("Erro swap\n");
+						}
+					}
+
+				}
+				if (min == minAnterior)
+				{
+					vz = CalculaVizinhancaSwap(currentSolution);
+					for (int i = 0; i < vz.size(); i++)
+					{
+						int valor = funcaoObjetiva(vz[i]);
+						if (valor < min)
+						{
+							min = valor;
+							currentSolution = vz[i];
+							if (currentSolution.back() != 0)
+							{
+								printf("Erro relocate\n");
+							}
+						}
+					}
+				}
+			}
+		rodadas++;
+		if (best > min)
+		{
+			best = min;
+			bestSolution = currentSolution;
+		}
+		T *= 1 - coolingRate;
+		//printf("T: %lf\n", T);
+
+	}
+	printf("Entrei %d\n", cont);
+
+
+	//	std::sort(bestSolution.begin(), bestSolution.end());
+	printf("menor vz = %d rodadas: %d\n", best, rodadas);
+	printf("Vetor Encontrado:\n");
+	for (auto i = 0; i < bestSolution.size(); i++)
+	{
+		printf(" %d -> ", bestSolution[i]);
+	}
+
+
+	return bestSolution;
+}
 
 
 
