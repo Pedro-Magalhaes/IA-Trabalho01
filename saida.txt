@@ -1,0 +1,362 @@
+==21671== Memcheck, a memory error detector
+==21671== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==21671== Using Valgrind-3.13.0 and LibVEX; rerun with -h for copyright info
+==21671== Command: ./bin/buscaTSP
+==21671== 
+Problem dataset/pa561.tsp
+padrao reconhecido LW_ROW: LOWER_DIAG_ROW
+last x: 0 num nodes 561
+Maior: 182 First = 0 Last = 0
+==21671== Invalid read of size 8
+==21671==    at 0x10E2AB: std::vector<int, std::allocator<int> >::~vector() (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x112CA4: void std::_Destroy<std::vector<int, std::allocator<int> > >(std::vector<int, std::allocator<int> >*) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x1123E2: void std::_Destroy_aux<false>::__destroy<std::vector<int, std::allocator<int> >*>(std::vector<int, std::allocator<int> >*, std::vector<int, std::allocator<int> >*) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x11160B: void std::_Destroy<std::vector<int, std::allocator<int> >*>(std::vector<int, std::allocator<int> >*, std::vector<int, std::allocator<int> >*) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x110284: void std::_Destroy<std::vector<int, std::allocator<int> >*, std::vector<int, std::allocator<int> > >(std::vector<int, std::allocator<int> >*, std::vector<int, std::allocator<int> >*, std::allocator<std::vector<int, std::allocator<int> > >&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10EBE6: std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >::~vector() (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x110B95: std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >::_M_move_assign(std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&&, std::integral_constant<bool, true>) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10F29C: std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >::operator=(std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10DBA5: Solver::BuscaLocal() (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x11942F: main (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==  Address 0x5b20c88 is 8 bytes inside an unallocated block of size 32 in arena "client"
+==21671== 
+==21671== Invalid read of size 8
+==21671==    at 0x10E2B3: std::vector<int, std::allocator<int> >::~vector() (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x112CA4: void std::_Destroy<std::vector<int, std::allocator<int> > >(std::vector<int, std::allocator<int> >*) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x1123E2: void std::_Destroy_aux<false>::__destroy<std::vector<int, std::allocator<int> >*>(std::vector<int, std::allocator<int> >*, std::vector<int, std::allocator<int> >*) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x11160B: void std::_Destroy<std::vector<int, std::allocator<int> >*>(std::vector<int, std::allocator<int> >*, std::vector<int, std::allocator<int> >*) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x110284: void std::_Destroy<std::vector<int, std::allocator<int> >*, std::vector<int, std::allocator<int> > >(std::vector<int, std::allocator<int> >*, std::vector<int, std::allocator<int> >*, std::allocator<std::vector<int, std::allocator<int> > >&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10EBE6: std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >::~vector() (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x110B95: std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >::_M_move_assign(std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&&, std::integral_constant<bool, true>) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10F29C: std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >::operator=(std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10DBA5: Solver::BuscaLocal() (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x11942F: main (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==  Address 0x5b20c80 is 0 bytes inside an unallocated block of size 32 in arena "client"
+==21671== 
+==21671== Invalid read of size 8
+==21671==    at 0x10F52E: std::_Vector_base<int, std::allocator<int> >::~_Vector_base() (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10E2CC: std::vector<int, std::allocator<int> >::~vector() (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x112CA4: void std::_Destroy<std::vector<int, std::allocator<int> > >(std::vector<int, std::allocator<int> >*) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x1123E2: void std::_Destroy_aux<false>::__destroy<std::vector<int, std::allocator<int> >*>(std::vector<int, std::allocator<int> >*, std::vector<int, std::allocator<int> >*) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x11160B: void std::_Destroy<std::vector<int, std::allocator<int> >*>(std::vector<int, std::allocator<int> >*, std::vector<int, std::allocator<int> >*) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x110284: void std::_Destroy<std::vector<int, std::allocator<int> >*, std::vector<int, std::allocator<int> > >(std::vector<int, std::allocator<int> >*, std::vector<int, std::allocator<int> >*, std::allocator<std::vector<int, std::allocator<int> > >&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10EBE6: std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >::~vector() (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x110B95: std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >::_M_move_assign(std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&&, std::integral_constant<bool, true>) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10F29C: std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >::operator=(std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10DBA5: Solver::BuscaLocal() (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x11942F: main (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==  Address 0x5b20c90 is 16 bytes inside an unallocated block of size 32 in arena "client"
+==21671== 
+==21671== Invalid read of size 8
+==21671==    at 0x10F539: std::_Vector_base<int, std::allocator<int> >::~_Vector_base() (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10E2CC: std::vector<int, std::allocator<int> >::~vector() (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x112CA4: void std::_Destroy<std::vector<int, std::allocator<int> > >(std::vector<int, std::allocator<int> >*) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x1123E2: void std::_Destroy_aux<false>::__destroy<std::vector<int, std::allocator<int> >*>(std::vector<int, std::allocator<int> >*, std::vector<int, std::allocator<int> >*) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x11160B: void std::_Destroy<std::vector<int, std::allocator<int> >*>(std::vector<int, std::allocator<int> >*, std::vector<int, std::allocator<int> >*) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x110284: void std::_Destroy<std::vector<int, std::allocator<int> >*, std::vector<int, std::allocator<int> > >(std::vector<int, std::allocator<int> >*, std::vector<int, std::allocator<int> >*, std::allocator<std::vector<int, std::allocator<int> > >&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10EBE6: std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >::~vector() (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x110B95: std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >::_M_move_assign(std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&&, std::integral_constant<bool, true>) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10F29C: std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >::operator=(std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10DBA5: Solver::BuscaLocal() (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x11942F: main (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==  Address 0x5b20c80 is 0 bytes inside an unallocated block of size 32 in arena "client"
+==21671== 
+==21671== Invalid read of size 8
+==21671==    at 0x10F54D: std::_Vector_base<int, std::allocator<int> >::~_Vector_base() (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10E2CC: std::vector<int, std::allocator<int> >::~vector() (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x112CA4: void std::_Destroy<std::vector<int, std::allocator<int> > >(std::vector<int, std::allocator<int> >*) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x1123E2: void std::_Destroy_aux<false>::__destroy<std::vector<int, std::allocator<int> >*>(std::vector<int, std::allocator<int> >*, std::vector<int, std::allocator<int> >*) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x11160B: void std::_Destroy<std::vector<int, std::allocator<int> >*>(std::vector<int, std::allocator<int> >*, std::vector<int, std::allocator<int> >*) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x110284: void std::_Destroy<std::vector<int, std::allocator<int> >*, std::vector<int, std::allocator<int> > >(std::vector<int, std::allocator<int> >*, std::vector<int, std::allocator<int> >*, std::allocator<std::vector<int, std::allocator<int> > >&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10EBE6: std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >::~vector() (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x110B95: std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >::_M_move_assign(std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&&, std::integral_constant<bool, true>) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10F29C: std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >::operator=(std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10DBA5: Solver::BuscaLocal() (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x11942F: main (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==  Address 0x5b20c80 is 0 bytes inside an unallocated block of size 32 in arena "client"
+==21671== 
+==21671== Invalid free() / delete / delete[] / realloc()
+==21671==    at 0x4C3123B: operator delete(void*) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==21671==    by 0x112C89: __gnu_cxx::new_allocator<std::vector<int, std::allocator<int> > >::deallocate(std::vector<int, std::allocator<int> >*, unsigned long) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x1123A3: std::allocator_traits<std::allocator<std::vector<int, std::allocator<int> > > >::deallocate(std::allocator<std::vector<int, std::allocator<int> > >&, std::vector<int, std::allocator<int> >*, unsigned long) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x1115E5: std::_Vector_base<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >::_M_deallocate(std::vector<int, std::allocator<int> >*, unsigned long) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x11023F: std::_Vector_base<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >::~_Vector_base() (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10EBF2: std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >::~vector() (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x110B95: std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >::_M_move_assign(std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&&, std::integral_constant<bool, true>) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10F29C: std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >::operator=(std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >&&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10DBA5: Solver::BuscaLocal() (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x11942F: main (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==  Address 0x5b20c80 is 0 bytes inside an unallocated block of size 32 in arena "client"
+==21671== 
+==21671== 
+==21671== Process terminating with default action of signal 2 (SIGINT)
+==21671==    at 0x10D7BC: Solver::CalculaVizinhancaRelocate(std::vector<int, std::allocator<int> >&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10DB8F: Solver::BuscaLocal() (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x11942F: main (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671== 
+==21671== HEAP SUMMARY:
+==21671==     in use at exit: 2,583,277,318 bytes in 1,128,088 blocks
+==21671==   total heap usage: 2,262,606 allocs, 1,134,524 frees, 5,198,413,760 bytes allocated
+==21671== 
+==21671== 18 bytes in 1 blocks are still reachable in loss record 1 of 22
+==21671==    at 0x4C3017F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==21671==    by 0x11C998: void std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_construct<char*>(char*, char*, std::forward_iterator_tag) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x4F640EE: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+==21671==    by 0x11EB95: void std::_Construct<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&>(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x11D71C: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >* std::__uninitialized_copy<false>::__uninit_copy<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*>(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x11C898: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >* std::uninitialized_copy<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*>(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x11BA51: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >* std::__uninitialized_copy_a<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x11AE09: void std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >::_M_range_initialize<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const*>(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const*, std::forward_iterator_tag) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x11A6E9: std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >::vector(std::initializer_list<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > const&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x1190DE: main (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671== 
+==21671== 28 bytes in 1 blocks are still reachable in loss record 2 of 22
+==21671==    at 0x4C3017F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==21671==    by 0x112C0F: __gnu_cxx::new_allocator<int>::allocate(unsigned long, void const*) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x1122E2: std::allocator_traits<std::allocator<int> >::allocate(std::allocator<int>&, unsigned long) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x111517: std::_Vector_base<int, std::allocator<int> >::_M_allocate(unsigned long) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x110821: void std::vector<int, std::allocator<int> >::_M_range_initialize<int const*>(int const*, int const*, std::forward_iterator_tag) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10EEEF: std::vector<int, std::allocator<int> >::vector(std::initializer_list<int>, std::allocator<int> const&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10DA81: Solver::BuscaLocal() (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x11942F: main (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671== 
+==21671== 32 bytes in 1 blocks are still reachable in loss record 3 of 22
+==21671==    at 0x4C3017F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==21671==    by 0x11D6D5: __gnu_cxx::new_allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >::allocate(unsigned long, void const*) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x11C867: std::allocator_traits<std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >::allocate(std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >&, unsigned long) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x11BA19: std::_Vector_base<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >::_M_allocate(unsigned long) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x11ADBF: void std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >::_M_range_initialize<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const*>(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const*, std::forward_iterator_tag) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x11A6E9: std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >::vector(std::initializer_list<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > const&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x1190DE: main (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671== 
+==21671== 56 bytes in 1 blocks are still reachable in loss record 4 of 22
+==21671==    at 0x4C3017F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==21671==    by 0x119383: main (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671== 
+==21671== 2,248 bytes in 1 blocks are still reachable in loss record 5 of 22
+==21671==    at 0x4C3017F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==21671==    by 0x112C0F: __gnu_cxx::new_allocator<int>::allocate(unsigned long, void const*) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x1122E2: std::allocator_traits<std::allocator<int> >::allocate(std::allocator<int>&, unsigned long) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x111517: std::_Vector_base<int, std::allocator<int> >::_M_allocate(unsigned long) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x110019: std::vector<int, std::allocator<int> >::_M_default_append(unsigned long) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10EB58: std::vector<int, std::allocator<int> >::resize(unsigned long) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10D46F: Solver::Solver(int, matrixRepresentation&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x119416: main (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671== 
+==21671== 2,248 bytes in 1 blocks are still reachable in loss record 6 of 22
+==21671==    at 0x4C3017F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==21671==    by 0x112C0F: __gnu_cxx::new_allocator<int>::allocate(unsigned long, void const*) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x1122E2: std::allocator_traits<std::allocator<int> >::allocate(std::allocator<int>&, unsigned long) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x111517: std::_Vector_base<int, std::allocator<int> >::_M_allocate(unsigned long) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x110E30: std::_Vector_base<int, std::allocator<int> >::_M_create_storage(unsigned long) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10F4FA: std::_Vector_base<int, std::allocator<int> >::_Vector_base(unsigned long, std::allocator<int> const&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10E255: std::vector<int, std::allocator<int> >::vector(unsigned long, std::allocator<int> const&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10D1E5: Solver::generateRandomSolution() (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10DA18: Solver::BuscaLocal() (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x11942F: main (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671== 
+==21671== 2,248 bytes in 1 blocks are still reachable in loss record 7 of 22
+==21671==    at 0x4C3017F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==21671==    by 0x112C0F: __gnu_cxx::new_allocator<int>::allocate(unsigned long, void const*) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x1122E2: std::allocator_traits<std::allocator<int> >::allocate(std::allocator<int>&, unsigned long) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x111517: std::_Vector_base<int, std::allocator<int> >::_M_allocate(unsigned long) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x11098D: int* std::vector<int, std::allocator<int> >::_M_allocate_and_copy<__gnu_cxx::__normal_iterator<int const*, std::vector<int, std::allocator<int> > > >(unsigned long, __gnu_cxx::__normal_iterator<int const*, std::vector<int, std::allocator<int> > >, __gnu_cxx::__normal_iterator<int const*, std::vector<int, std::allocator<int> > >) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10F09A: std::vector<int, std::allocator<int> >::operator=(std::vector<int, std::allocator<int> > const&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10DB04: Solver::BuscaLocal() (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x11942F: main (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671== 
+==21671== 2,248 bytes in 1 blocks are still reachable in loss record 8 of 22
+==21671==    at 0x4C3017F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==21671==    by 0x112C0F: __gnu_cxx::new_allocator<int>::allocate(unsigned long, void const*) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x1122E2: std::allocator_traits<std::allocator<int> >::allocate(std::allocator<int>&, unsigned long) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x111517: std::_Vector_base<int, std::allocator<int> >::_M_allocate(unsigned long) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x110E30: std::_Vector_base<int, std::allocator<int> >::_M_create_storage(unsigned long) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10F4FA: std::_Vector_base<int, std::allocator<int> >::_Vector_base(unsigned long, std::allocator<int> const&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10EC5C: std::vector<int, std::allocator<int> >::vector(std::vector<int, std::allocator<int> > const&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10D721: Solver::CalculaVizinhancaRelocate(std::vector<int, std::allocator<int> >&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10DB8F: Solver::BuscaLocal() (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x11942F: main (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671== 
+==21671== 2,248 bytes in 1 blocks are still reachable in loss record 9 of 22
+==21671==    at 0x4C3017F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==21671==    by 0x112C0F: __gnu_cxx::new_allocator<int>::allocate(unsigned long, void const*) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x1122E2: std::allocator_traits<std::allocator<int> >::allocate(std::allocator<int>&, unsigned long) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x111517: std::_Vector_base<int, std::allocator<int> >::_M_allocate(unsigned long) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x110E30: std::_Vector_base<int, std::allocator<int> >::_M_create_storage(unsigned long) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10F4FA: std::_Vector_base<int, std::allocator<int> >::_Vector_base(unsigned long, std::allocator<int> const&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10E255: std::vector<int, std::allocator<int> >::vector(unsigned long, std::allocator<int> const&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10D1E5: Solver::generateRandomSolution() (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10DF13: Solver::BuscaLocal() (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x11942F: main (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671== 
+==21671== 13,464 bytes in 1 blocks are still reachable in loss record 10 of 22
+==21671==    at 0x4C3017F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==21671==    by 0x112928: __gnu_cxx::new_allocator<std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > > >::allocate(unsigned long, void const*) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x1120AA: std::allocator_traits<std::allocator<std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > > > >::allocate(std::allocator<std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > > >&, unsigned long) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x111249: std::_Vector_base<std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > >, std::allocator<std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > > > >::_M_allocate(unsigned long) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x116ADA: std::vector<std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > >, std::allocator<std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > > > >::_M_default_append(unsigned long) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x11644E: std::vector<std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > >, std::allocator<std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > > > >::resize(unsigned long) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x11486C: matrixRepresentation::matrixRepresentation(unsigned int, MatrixType) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x11939C: main (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671== 
+==21671== 13,464 bytes in 1 blocks are still reachable in loss record 11 of 22
+==21671==    at 0x4C3017F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==21671==    by 0x112928: __gnu_cxx::new_allocator<std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > > >::allocate(unsigned long, void const*) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x1120AA: std::allocator_traits<std::allocator<std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > > > >::allocate(std::allocator<std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > > >&, unsigned long) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x111249: std::_Vector_base<std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > >, std::allocator<std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > > > >::_M_allocate(unsigned long) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10FD6F: std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > >* std::vector<std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > >, std::allocator<std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > > > >::_M_allocate_and_copy<__gnu_cxx::__normal_iterator<std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > > const*, std::vector<std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > >, std::allocator<std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > > > > > >(unsigned long, __gnu_cxx::__normal_iterator<std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > > const*, std::vector<std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > >, std::allocator<std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > > > > >, __gnu_cxx::__normal_iterator<std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > > const*, std::vector<std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > >, std::allocator<std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > > > > >) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10E911: std::vector<std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > >, std::allocator<std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > > > >::operator=(std::vector<std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > >, std::allocator<std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > > > > const&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10E1A8: matrixRepresentation::operator=(matrixRepresentation const&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10D44A: Solver::Solver(int, matrixRepresentation&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x119416: main (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671== 
+==21671== 35,968 bytes in 16 blocks are still reachable in loss record 12 of 22
+==21671==    at 0x4C3017F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==21671==    by 0x112C0F: __gnu_cxx::new_allocator<int>::allocate(unsigned long, void const*) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x1122E2: std::allocator_traits<std::allocator<int> >::allocate(std::allocator<int>&, unsigned long) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x111517: std::_Vector_base<int, std::allocator<int> >::_M_allocate(unsigned long) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x110E30: std::_Vector_base<int, std::allocator<int> >::_M_create_storage(unsigned long) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10F4FA: std::_Vector_base<int, std::allocator<int> >::_Vector_base(unsigned long, std::allocator<int> const&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10EC5C: std::vector<int, std::allocator<int> >::vector(std::vector<int, std::allocator<int> > const&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x1116F7: void __gnu_cxx::new_allocator<std::vector<int, std::allocator<int> > >::construct<std::vector<int, std::allocator<int> >, std::vector<int, std::allocator<int> >&>(std::vector<int, std::allocator<int> >*, std::vector<int, std::allocator<int> >&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x1103F0: void std::allocator_traits<std::allocator<std::vector<int, std::allocator<int> > > >::construct<std::vector<int, std::allocator<int> >, std::vector<int, std::allocator<int> >&>(std::allocator<std::vector<int, std::allocator<int> > >&, std::vector<int, std::allocator<int> >*, std::vector<int, std::allocator<int> >&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x110504: void std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >::_M_realloc_insert<std::vector<int, std::allocator<int> >&>(__gnu_cxx::__normal_iterator<std::vector<int, std::allocator<int> >*, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > > >, std::vector<int, std::allocator<int> >&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10EDAB: void std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >::emplace_back<std::vector<int, std::allocator<int> >&>(std::vector<int, std::allocator<int> >&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10D812: Solver::CalculaVizinhancaRelocate(std::vector<int, std::allocator<int> >&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671== 
+==21671== 85,424 bytes in 38 blocks are possibly lost in loss record 13 of 22
+==21671==    at 0x4C3017F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==21671==    by 0x112C0F: __gnu_cxx::new_allocator<int>::allocate(unsigned long, void const*) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x1122E2: std::allocator_traits<std::allocator<int> >::allocate(std::allocator<int>&, unsigned long) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x111517: std::_Vector_base<int, std::allocator<int> >::_M_allocate(unsigned long) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x110E30: std::_Vector_base<int, std::allocator<int> >::_M_create_storage(unsigned long) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10F4FA: std::_Vector_base<int, std::allocator<int> >::_Vector_base(unsigned long, std::allocator<int> const&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10EC5C: std::vector<int, std::allocator<int> >::vector(std::vector<int, std::allocator<int> > const&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x1116F7: void __gnu_cxx::new_allocator<std::vector<int, std::allocator<int> > >::construct<std::vector<int, std::allocator<int> >, std::vector<int, std::allocator<int> >&>(std::vector<int, std::allocator<int> >*, std::vector<int, std::allocator<int> >&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x1103F0: void std::allocator_traits<std::allocator<std::vector<int, std::allocator<int> > > >::construct<std::vector<int, std::allocator<int> >, std::vector<int, std::allocator<int> >&>(std::allocator<std::vector<int, std::allocator<int> > >&, std::vector<int, std::allocator<int> >*, std::vector<int, std::allocator<int> >&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x110504: void std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >::_M_realloc_insert<std::vector<int, std::allocator<int> >&>(__gnu_cxx::__normal_iterator<std::vector<int, std::allocator<int> >*, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > > >, std::vector<int, std::allocator<int> >&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10EDAB: void std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >::emplace_back<std::vector<int, std::allocator<int> >&>(std::vector<int, std::allocator<int> >&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10D812: Solver::CalculaVizinhancaRelocate(std::vector<int, std::allocator<int> >&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671== 
+==21671== 213,560 bytes in 95 blocks are indirectly lost in loss record 14 of 22
+==21671==    at 0x4C3017F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==21671==    by 0x112C0F: __gnu_cxx::new_allocator<int>::allocate(unsigned long, void const*) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x1122E2: std::allocator_traits<std::allocator<int> >::allocate(std::allocator<int>&, unsigned long) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x111517: std::_Vector_base<int, std::allocator<int> >::_M_allocate(unsigned long) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x110E30: std::_Vector_base<int, std::allocator<int> >::_M_create_storage(unsigned long) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10F4FA: std::_Vector_base<int, std::allocator<int> >::_Vector_base(unsigned long, std::allocator<int> const&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10EC5C: std::vector<int, std::allocator<int> >::vector(std::vector<int, std::allocator<int> > const&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x1116F7: void __gnu_cxx::new_allocator<std::vector<int, std::allocator<int> > >::construct<std::vector<int, std::allocator<int> >, std::vector<int, std::allocator<int> >&>(std::vector<int, std::allocator<int> >*, std::vector<int, std::allocator<int> >&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x1103F0: void std::allocator_traits<std::allocator<std::vector<int, std::allocator<int> > > >::construct<std::vector<int, std::allocator<int> >, std::vector<int, std::allocator<int> >&>(std::allocator<std::vector<int, std::allocator<int> > >&, std::vector<int, std::allocator<int> >*, std::vector<int, std::allocator<int> >&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x110504: void std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >::_M_realloc_insert<std::vector<int, std::allocator<int> >&>(__gnu_cxx::__normal_iterator<std::vector<int, std::allocator<int> >*, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > > >, std::vector<int, std::allocator<int> >&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10EDAB: void std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >::emplace_back<std::vector<int, std::allocator<int> >&>(std::vector<int, std::allocator<int> >&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10D812: Solver::CalculaVizinhancaRelocate(std::vector<int, std::allocator<int> >&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671== 
+==21671== 786,432 bytes in 1 blocks are still reachable in loss record 15 of 22
+==21671==    at 0x4C3017F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==21671==    by 0x112D56: __gnu_cxx::new_allocator<std::vector<int, std::allocator<int> > >::allocate(unsigned long, void const*) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x112473: std::allocator_traits<std::allocator<std::vector<int, std::allocator<int> > > >::allocate(std::allocator<std::vector<int, std::allocator<int> > >&, unsigned long) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x1118EF: std::_Vector_base<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >::_M_allocate(unsigned long) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x1104BB: void std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >::_M_realloc_insert<std::vector<int, std::allocator<int> >&>(__gnu_cxx::__normal_iterator<std::vector<int, std::allocator<int> >*, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > > >, std::vector<int, std::allocator<int> >&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10EDAB: void std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >::emplace_back<std::vector<int, std::allocator<int> >&>(std::vector<int, std::allocator<int> >&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10D812: Solver::CalculaVizinhancaRelocate(std::vector<int, std::allocator<int> >&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10DB8F: Solver::BuscaLocal() (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x11942F: main (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671== 
+==21671== 2,517,768 bytes in 561 blocks are still reachable in loss record 16 of 22
+==21671==    at 0x4C3017F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==21671==    by 0x1144F9: __gnu_cxx::new_allocator<std::pair<int, int> >::allocate(unsigned long, void const*) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x114290: std::allocator_traits<std::allocator<std::pair<int, int> > >::allocate(std::allocator<std::pair<int, int> >&, unsigned long) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x113EBD: std::_Vector_base<std::pair<int, int>, std::allocator<std::pair<int, int> > >::_M_allocate(unsigned long) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x116CFF: std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > >::_M_default_append(unsigned long) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x11650E: std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > >::resize(unsigned long) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x1148A2: matrixRepresentation::matrixRepresentation(unsigned int, MatrixType) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x11939C: main (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671== 
+==21671== 2,517,768 bytes in 561 blocks are still reachable in loss record 17 of 22
+==21671==    at 0x4C3017F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==21671==    by 0x1144F9: __gnu_cxx::new_allocator<std::pair<int, int> >::allocate(unsigned long, void const*) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x114290: std::allocator_traits<std::allocator<std::pair<int, int> > >::allocate(std::allocator<std::pair<int, int> >&, unsigned long) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x113EBD: std::_Vector_base<std::pair<int, int>, std::allocator<std::pair<int, int> > >::_M_allocate(unsigned long) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x11410E: std::_Vector_base<std::pair<int, int>, std::allocator<std::pair<int, int> > >::_M_create_storage(unsigned long) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x113C16: std::_Vector_base<std::pair<int, int>, std::allocator<std::pair<int, int> > >::_Vector_base(unsigned long, std::allocator<std::pair<int, int> > const&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x113442: std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > >::vector(std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > > const&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x113082: void std::_Construct<std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > >, std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > > const&>(std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > >*, std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > > const&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x112984: std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > >* std::__uninitialized_copy<false>::__uninit_copy<__gnu_cxx::__normal_iterator<std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > > const*, std::vector<std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > >, std::allocator<std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > > > > >, std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > >*>(__gnu_cxx::__normal_iterator<std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > > const*, std::vector<std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > >, std::allocator<std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > > > > >, __gnu_cxx::__normal_iterator<std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > > const*, std::vector<std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > >, std::allocator<std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > > > > >, std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > >*) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x1120DB: std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > >* std::uninitialized_copy<__gnu_cxx::__normal_iterator<std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > > const*, std::vector<std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > >, std::allocator<std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > > > > >, std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > >*>(__gnu_cxx::__normal_iterator<std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > > const*, std::vector<std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > >, std::allocator<std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > > > > >, __gnu_cxx::__normal_iterator<std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > > const*, std::vector<std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > >, std::allocator<std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > > > > >, std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > >*) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x111281: std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > >* std::__uninitialized_copy_a<__gnu_cxx::__normal_iterator<std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > > const*, std::vector<std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > >, std::allocator<std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > > > > >, std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > >*, std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > > >(__gnu_cxx::__normal_iterator<std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > > const*, std::vector<std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > >, std::allocator<std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > > > > >, __gnu_cxx::__normal_iterator<std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > > const*, std::vector<std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > >, std::allocator<std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > > > > >, std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > >*, std::allocator<std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > > >&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10FD96: std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > >* std::vector<std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > >, std::allocator<std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > > > >::_M_allocate_and_copy<__gnu_cxx::__normal_iterator<std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > > const*, std::vector<std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > >, std::allocator<std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > > > > > >(unsigned long, __gnu_cxx::__normal_iterator<std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > > const*, std::vector<std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > >, std::allocator<std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > > > > >, __gnu_cxx::__normal_iterator<std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > > const*, std::vector<std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > >, std::allocator<std::vector<std::pair<int, int>, std::allocator<std::pair<int, int> > > > > >) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671== 
+==21671== 12,582,912 bytes in 2 blocks are possibly lost in loss record 18 of 22
+==21671==    at 0x4C3017F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==21671==    by 0x112D56: __gnu_cxx::new_allocator<std::vector<int, std::allocator<int> > >::allocate(unsigned long, void const*) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x112473: std::allocator_traits<std::allocator<std::vector<int, std::allocator<int> > > >::allocate(std::allocator<std::vector<int, std::allocator<int> > >&, unsigned long) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x1118EF: std::_Vector_base<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >::_M_allocate(unsigned long) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x1104BB: void std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >::_M_realloc_insert<std::vector<int, std::allocator<int> >&>(__gnu_cxx::__normal_iterator<std::vector<int, std::allocator<int> >*, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > > >, std::vector<int, std::allocator<int> >&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10EDAB: void std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >::emplace_back<std::vector<int, std::allocator<int> >&>(std::vector<int, std::allocator<int> >&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10D812: Solver::CalculaVizinhancaRelocate(std::vector<int, std::allocator<int> >&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10DB8F: Solver::BuscaLocal() (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x11942F: main (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671== 
+==21671== 61,543,496 bytes in 27,377 blocks are still reachable in loss record 19 of 22
+==21671==    at 0x4C3017F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==21671==    by 0x112C0F: __gnu_cxx::new_allocator<int>::allocate(unsigned long, void const*) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x1122E2: std::allocator_traits<std::allocator<int> >::allocate(std::allocator<int>&, unsigned long) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x111517: std::_Vector_base<int, std::allocator<int> >::_M_allocate(unsigned long) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x110E30: std::_Vector_base<int, std::allocator<int> >::_M_create_storage(unsigned long) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10F4FA: std::_Vector_base<int, std::allocator<int> >::_Vector_base(unsigned long, std::allocator<int> const&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10EC5C: std::vector<int, std::allocator<int> >::vector(std::vector<int, std::allocator<int> > const&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x1116F7: void __gnu_cxx::new_allocator<std::vector<int, std::allocator<int> > >::construct<std::vector<int, std::allocator<int> >, std::vector<int, std::allocator<int> >&>(std::vector<int, std::allocator<int> >*, std::vector<int, std::allocator<int> >&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x1103F0: void std::allocator_traits<std::allocator<std::vector<int, std::allocator<int> > > >::construct<std::vector<int, std::allocator<int> >, std::vector<int, std::allocator<int> >&>(std::allocator<std::vector<int, std::allocator<int> > >&, std::vector<int, std::allocator<int> >*, std::vector<int, std::allocator<int> >&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10ED65: void std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >::emplace_back<std::vector<int, std::allocator<int> >&>(std::vector<int, std::allocator<int> >&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10D812: Solver::CalculaVizinhancaRelocate(std::vector<int, std::allocator<int> >&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10DB8F: Solver::BuscaLocal() (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671== 
+==21671== 706,269,896 bytes in 314,177 blocks are possibly lost in loss record 20 of 22
+==21671==    at 0x4C3017F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==21671==    by 0x112C0F: __gnu_cxx::new_allocator<int>::allocate(unsigned long, void const*) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x1122E2: std::allocator_traits<std::allocator<int> >::allocate(std::allocator<int>&, unsigned long) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x111517: std::_Vector_base<int, std::allocator<int> >::_M_allocate(unsigned long) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x110E30: std::_Vector_base<int, std::allocator<int> >::_M_create_storage(unsigned long) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10F4FA: std::_Vector_base<int, std::allocator<int> >::_Vector_base(unsigned long, std::allocator<int> const&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10EC5C: std::vector<int, std::allocator<int> >::vector(std::vector<int, std::allocator<int> > const&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x1116F7: void __gnu_cxx::new_allocator<std::vector<int, std::allocator<int> > >::construct<std::vector<int, std::allocator<int> >, std::vector<int, std::allocator<int> >&>(std::vector<int, std::allocator<int> >*, std::vector<int, std::allocator<int> >&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x1103F0: void std::allocator_traits<std::allocator<std::vector<int, std::allocator<int> > > >::construct<std::vector<int, std::allocator<int> >, std::vector<int, std::allocator<int> >&>(std::allocator<std::vector<int, std::allocator<int> > >&, std::vector<int, std::allocator<int> >*, std::vector<int, std::allocator<int> >&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10ED65: void std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >::emplace_back<std::vector<int, std::allocator<int> >&>(std::vector<int, std::allocator<int> >&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10D812: Solver::CalculaVizinhancaRelocate(std::vector<int, std::allocator<int> >&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10DB8F: Solver::BuscaLocal() (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671== 
+==21671== 1,765,228,512 bytes in 785,244 blocks are indirectly lost in loss record 21 of 22
+==21671==    at 0x4C3017F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==21671==    by 0x112C0F: __gnu_cxx::new_allocator<int>::allocate(unsigned long, void const*) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x1122E2: std::allocator_traits<std::allocator<int> >::allocate(std::allocator<int>&, unsigned long) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x111517: std::_Vector_base<int, std::allocator<int> >::_M_allocate(unsigned long) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x110E30: std::_Vector_base<int, std::allocator<int> >::_M_create_storage(unsigned long) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10F4FA: std::_Vector_base<int, std::allocator<int> >::_Vector_base(unsigned long, std::allocator<int> const&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10EC5C: std::vector<int, std::allocator<int> >::vector(std::vector<int, std::allocator<int> > const&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x1116F7: void __gnu_cxx::new_allocator<std::vector<int, std::allocator<int> > >::construct<std::vector<int, std::allocator<int> >, std::vector<int, std::allocator<int> >&>(std::vector<int, std::allocator<int> >*, std::vector<int, std::allocator<int> >&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x1103F0: void std::allocator_traits<std::allocator<std::vector<int, std::allocator<int> > > >::construct<std::vector<int, std::allocator<int> >, std::vector<int, std::allocator<int> >&>(std::allocator<std::vector<int, std::allocator<int> > >&, std::vector<int, std::allocator<int> >*, std::vector<int, std::allocator<int> >&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10ED65: void std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >::emplace_back<std::vector<int, std::allocator<int> >&>(std::vector<int, std::allocator<int> >&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10D812: Solver::CalculaVizinhancaRelocate(std::vector<int, std::allocator<int> >&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10DB8F: Solver::BuscaLocal() (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671== 
+==21671== 1,796,899,352 (31,457,280 direct, 1,765,442,072 indirect) bytes in 5 blocks are definitely lost in loss record 22 of 22
+==21671==    at 0x4C3017F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==21671==    by 0x112D56: __gnu_cxx::new_allocator<std::vector<int, std::allocator<int> > >::allocate(unsigned long, void const*) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x112473: std::allocator_traits<std::allocator<std::vector<int, std::allocator<int> > > >::allocate(std::allocator<std::vector<int, std::allocator<int> > >&, unsigned long) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x1118EF: std::_Vector_base<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >::_M_allocate(unsigned long) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x1104BB: void std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >::_M_realloc_insert<std::vector<int, std::allocator<int> >&>(__gnu_cxx::__normal_iterator<std::vector<int, std::allocator<int> >*, std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > > >, std::vector<int, std::allocator<int> >&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10EDAB: void std::vector<std::vector<int, std::allocator<int> >, std::allocator<std::vector<int, std::allocator<int> > > >::emplace_back<std::vector<int, std::allocator<int> >&>(std::vector<int, std::allocator<int> >&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10D812: Solver::CalculaVizinhancaRelocate(std::vector<int, std::allocator<int> >&) (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x10DB8F: Solver::BuscaLocal() (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671==    by 0x11942F: main (in /home/pedro/Documents/Puc/IA-Trabalho01/bin/buscaTSP)
+==21671== 
+==21671== LEAK SUMMARY:
+==21671==    definitely lost: 31,457,280 bytes in 5 blocks
+==21671==    indirectly lost: 1,765,442,072 bytes in 785,339 blocks
+==21671==      possibly lost: 718,938,232 bytes in 314,217 blocks
+==21671==    still reachable: 67,439,734 bytes in 28,527 blocks
+==21671==         suppressed: 0 bytes in 0 blocks
+==21671== 
+==21671== For counts of detected and suppressed errors, rerun with: -v
+==21671== ERROR SUMMARY: 40 errors from 10 contexts (suppressed: 0 from 0)
