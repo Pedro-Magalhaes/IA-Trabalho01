@@ -2,11 +2,17 @@
 #include <vector>
 
 #include "matrixRepresentation.h"
-
+#include "unionfind.h"
 
 class Solver
 {
 private:
+	enum Color
+		{
+			WHITE,
+			GRAY,
+			BLACK
+		};
 	std::vector<int> generateRandomSolution();
 	int funcaoObjetiva(std::vector<int> & sol);
 	std::vector<matrixRepresentation::edge> getSortedEdges();
@@ -16,8 +22,8 @@ public:
 	Solver(int n,matrixRepresentation & m);
 	std::vector<int> solucaoGulosa();
 	std::vector<int> solucaoKruskalAdaptada();
-	void dfs(int s, int p);
-	void dfs_visit(int u, std::vector<int>& cor, int p);
+	std::vector<int> dfs(int s, int p);
+	int dfs_visit(int u, int p, int latencia, int * melhorLatencia,std::vector<Color> inPath, int pAtual);
 	std::vector<int> BAHIA();
 	std::vector<std::vector<int>> CalculaVizinhancaSwap(std::vector<int>& sol,int limit = 0);
 	std::vector<std::vector<int>> CalculaVizinhancaRelocate(std::vector<int>& sol);
@@ -28,12 +34,7 @@ public:
 	~Solver();
 
 private:
-	enum Color
-	{
-		WHITE,
-		GRAY,
-		BLACK
-	};
+	
 	matrixRepresentation _m;
 	std::vector<int> _finalSolution;
 	int _node_number;
