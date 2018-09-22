@@ -5,6 +5,14 @@
 #include <chrono>
 #include "math.h"
 #include <climits>
+void printasolucao(std::vector<int> v)
+{
+	for (int i = 0; i < v.size(); i++)
+	{
+		printf("%d ", v[i]);
+	}
+	printf("\n");
+}
 // Gera uma solução randomica para o problema
 std::vector<int> Solver::generateRandomSolution()
 {
@@ -178,7 +186,7 @@ std::vector<int> Solver::solucaoGulosa()
 	sortedNeighbors = this->_m.getSortedNeighbours(0);
 	for(int j = 1; j < this->_node_number; j++)
 		{
-			printf("f: %d  s:  %d\n ",sortedNeighbors[j].first,sortedNeighbors[j].second);
+			//printf("f: %d  s:  %d\n ",sortedNeighbors[j].first,sortedNeighbors[j].second);
 		}
 	// partindo do primeiro no [0] indo até [n-2]
 	for(auto i = 0; i < this->_node_number - 1; i++) 
@@ -212,10 +220,10 @@ std::vector<int> Solver::solucaoGulosa()
 	soma+= soma + this->_m.nodeAt(0,bestNode.first).second;
 	for(unsigned int i=0;i<solucao.size();i++)
 	{
-		printf(" %d >",solucao[i]);
+		//printf(" %d >",solucao[i]);
 	}
-	printf("\n");
-	printf("Custo solucao calulado: %u, custo calculado com func atual %d: \n",soma,this->funcaoObjetiva(solucao));
+	//printf("\n");
+	//printf("Custo solucao calulado: %u, custo calculado com func atual %d: \n",soma,this->funcaoObjetiva(solucao));
 	return solucao;
 }
 
@@ -256,34 +264,43 @@ std::vector<int> Solver::dfs(int s, int p) //busca por profundidade => acho que 
 	path.emplace_back(s); // depot
 	inPath[s] = Color::BLACK;
 	int melhorCandidato = 0;
+	//percorre todos  os nós
 	for(unsigned int i = 1; i<_m.getNodeNumber(); i++)
 	{
-		printf("0\n");
+		//printf("0\n");
 		melhorLatencia = INT_MAX;
 		latMelhorCandidato = INT_MAX;
-		printf("1\n");
+		//printf("1\n");
+		//Pegando vizinhos ordenados por ordem de custo do melhor candidato que no inicio eh o deposito
 		std::vector<std::pair<int,int>> melhoresVizinhos = _m.getSortedNeighbours(melhorCandidato);
-		printf("2\n");
-		for(unsigned int j = 1; j < melhoresVizinhos.size(); j++ )
+		//printf("2\n");
+		//Passando pelos vizinhos
+		for (unsigned int j = 1; j < melhoresVizinhos.size(); j++)
 		{
-			if(inPath[melhoresVizinhos[j].first] == Color::WHITE)
+			//Se vizinho ainda não foi visitado, visita ele com a dfs_visit
+			if (inPath[melhoresVizinhos[j].first] == Color::WHITE)
 			{
-				latencia = dfs_visit(melhoresVizinhos[j].first, p-1,melhoresVizinhos[j].second,&melhorLatencia,inPath,i);
-			//printf("testando para o vizinho: %d, peso da aresta: %d, latencia retornada: %d\n ",melhoresVizinhos[j].first,melhoresVizinhos[j].second,latencia);
-			if(latencia < latMelhorCandidato)
-			{
-				latMelhorCandidato = latencia;
-				melhorCandidato = melhoresVizinhos[j].first;
+				//Percorre e calcula a latencia ate uma  profundidade p
+				latencia = dfs_visit(melhoresVizinhos[j].first, p - 1, melhoresVizinhos[j].second, &melhorLatencia, inPath, i);
+
+				//Se a latencia for melhor que a latencia do melhor candidato até agora, troca a melhor latencia e o melhor candidato
+				if (latencia < latMelhorCandidato)
+				{
+					latMelhorCandidato = latencia;
+					melhorCandidato = melhoresVizinhos[j].first;
+				}
 			}
-			//printf("melhor C: %d \n",melhorCandidato);
-			}
-			
+
 		}
+		//Depois que passa pelo melhor candidato, marca ele como já visto com a cor black
 		inPath[melhorCandidato] = Color::BLACK;
+		//Adiciona o melhor candidato ao nosso caminho
 		path.emplace_back(melhorCandidato);
 	}
+	//No final adiciona o depósito 
 	path.emplace_back(s); //back depot
 	printf("Latencia do path dfs: %d melhor latencia %d, size path %u\n",funcaoObjetiva(path),melhorLatencia,path.size());
+	printasolucao(path);
 	// for(auto i = 0; i < path.size(); i++)
 	// {
 	// 	printf(" %d > ",path[i]);
@@ -300,7 +317,7 @@ int Solver::dfs_visit(int u, int p, int latencia, int * melhorLatencia, std::vec
 		//printf("Poda em no %d , prof %d\n",u,p);
 		return INT_MAX;
 	}
-	if (p == 0)
+	if (p == 0) // Se a profundidade restante a ser explorada for zero
 	{
 		if(latencia < *melhorLatencia)
 		{
@@ -467,14 +484,6 @@ std::vector<std::vector<int>> Solver::CalculaVizinhancakOpt(std::vector<int> &so
 
 	return vizinhanca;
 }
-void printasolucao(std::vector<int> v)
-{
-	for (int i = 0; i < v.size(); i++)
-	{
-		printf("%d ", v[i]);
-	}
-	printf("\n");
-}
 
 //Implementa uma Busca Local (Hill Climbing??)
 std::vector<int> Solver::BuscaLocal()
@@ -596,8 +605,10 @@ std::vector<int> Solver::SimAnn()
 	int min, minAnterior, best;
 	float coolingRate = 0.002;
 	currentSolution = inicialSolution;
+	printasolucao(inicialSolution);
 	bestSolution = currentSolution;
 	best = funcaoObjetiva(currentSolution);
+	printf("Initial solution funcao objetiva: %d\n", best);
 	//for (int j = 0; j < 10; j++)
 	//{
 		double T = 10000;

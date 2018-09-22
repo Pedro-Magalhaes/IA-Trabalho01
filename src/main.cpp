@@ -150,6 +150,6 @@ int main()
    // printf("\n\tAnnealing:\n");
    // aux = s.SimAnn();
     printf("DFS gulosa jeff: \n");
-    s.dfs(0,4);
+    s.SimAnn();
     return 0;
 }
