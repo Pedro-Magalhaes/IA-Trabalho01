@@ -172,6 +172,15 @@ std::vector < std::vector < std::pair<int,int> > > matrixRepresentation::constru
         return a.second < b.second;   
         } );
     }
+	for (int i = 0; i < sorted.size();i++)
+	{
+		printf("%d ", i);
+		for (int j = 0;j < sorted[i].size();j++)
+		{
+			printf("%d ", sorted[i][j]);
+		}
+		printf("\n\n\n");
+	}
     return sorted;
 }
 

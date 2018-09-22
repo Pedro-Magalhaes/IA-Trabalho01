@@ -107,7 +107,7 @@ int getProblemData(unsigned int &size, MatrixType &mType, std::string &text)
 int main()
 {
 
-    std::vector<std::string> files = {/*"dataset/brazil58.tsp",*/"dataset/dantzig42.tsp" /*,"dataset/gr48.tsp","dataset/gr120.tsp","dataset/pa561.tsp"*/};
+    std::vector<std::string> files = {/*"dataset/brazil58.tsp",*/"dataset/dantzig42.tsp" ,/*"dataset/gr48.tsp","dataset/gr120.tsp",/*"dataset/pa561.tsp"*/};
 	unsigned int nodeNumber = 0;
 	matrixRepresentation *problemMatrix;
     for (size_t i = 0; i < files.size(); i++)
