@@ -5,6 +5,7 @@
 #include <chrono>
 #include "math.h"
 #include <climits>
+#include <ctime>
 void printasolucao(std::vector<int> v)
 {
 	for (int i = 0; i < v.size(); i++)
@@ -254,6 +255,7 @@ Solver::Solver(int n, matrixRepresentation & m)
 // s == depot , p == profundidade maxima
 std::vector<int> Solver::dfs(int s, int p) //busca por profundidade => acho que t
 {
+	clock_t inicio = std::clock();
 	int latencia;
 	
 	int latMelhorCandidato = INT_MAX;
@@ -281,7 +283,7 @@ std::vector<int> Solver::dfs(int s, int p) //busca por profundidade => acho que 
 			if (inPath[melhoresVizinhos[j].first] == Color::WHITE)
 			{
 				//Percorre e calcula a latencia ate uma  profundidade p
-				latencia = dfs_visit(melhoresVizinhos[j].first, p - 1, melhoresVizinhos[j].second, &melhorLatencia, inPath, i);
+				latencia = dfs_visit(melhoresVizinhos[j].first, p - 1, melhoresVizinhos[j].second, &melhorLatencia, inPath, i);			
 
 				//Se a latencia for melhor que a latencia do melhor candidato até agora, troca a melhor latencia e o melhor candidato
 				if (latencia < latMelhorCandidato)
@@ -301,11 +303,9 @@ std::vector<int> Solver::dfs(int s, int p) //busca por profundidade => acho que 
 	path.emplace_back(s); //back depot
 	printf("Latencia do path dfs: %d melhor latencia %d, size path %u\n",funcaoObjetiva(path),melhorLatencia,path.size());
 	printasolucao(path);
-	// for(auto i = 0; i < path.size(); i++)
-	// {
-	// 	printf(" %d > ",path[i]);
-	// }
-	// printf(" \n ");
+	clock_t fim = std::clock();
+	float tempo = float(fim - inicio)/ CLOCKS_PER_SEC;
+	printf("Tempo da busca gulosa: %lf\n",tempo );
 	return path;
 }
 // vai retornar o id do no com caminho mais barato e a latencia ate p
@@ -491,7 +491,7 @@ std::vector<int> Solver::BuscaLocal()
 	std::vector<int> inicialSolution;
 	std::vector<int> currentSolution;
 	std::vector<int> bestSolution;
-	inicialSolution = dfs(0,4);//solucaoKruskalAdaptada();
+	inicialSolution = dfs(0,6);//solucaoKruskalAdaptada();
 	std::vector<int> test = {0,1,2,3,4,5,0};
 	//CalculaVizinhancakOpt(test, 2);
 	//for (int i = 0; i < this->_node_number; i++)
@@ -509,7 +509,7 @@ std::vector<int> Solver::BuscaLocal()
 	currentSolution = inicialSolution;
 	bestSolution = currentSolution;
 	best = funcaoObjetiva(currentSolution);
-	for (int j = 0; j < 10; j++)
+	for (int j = 0; j < 1; j++)
 	{
 		while (count < 1)
 		{
@@ -527,7 +527,7 @@ std::vector<int> Solver::BuscaLocal()
 			}
 			if (min == minAnterior)
 			{
-				vz = CalculaVizinhancaRelocate(currentSolution);
+				vz = CalculaVizinhancaSwap(currentSolution);
 				for (int i = 0; i < vz.size(); i++)
 				{
 					int valor = funcaoObjetiva(vz[i]);
@@ -539,7 +539,7 @@ std::vector<int> Solver::BuscaLocal()
 				}
 				if (min == minAnterior)
 				{
-					vz = CalculaVizinhancakOpt(currentSolution);
+					vz = CalculaVizinhancaRelocate(currentSolution);
 					for (int i = 0; i < vz.size(); i++)
 					{
 						int valor = funcaoObjetiva(vz[i]);
@@ -575,13 +575,18 @@ std::vector<int> Solver::BuscaLocal()
 
 	return bestSolution;
 }
+
 //Implementa Simulated Annealing
 std::vector<int> Solver::SimAnn()
 {
+	clock_t inicio = std::clock();
+	int indice = ((_node_number )%6) + 6;
 	std::vector<int> inicialSolution;
 	std::vector<int> currentSolution;
 	std::vector<int> bestSolution;
-	inicialSolution = dfs(0,4);//solucaoKruskalAdaptada();
+	printf("Indice: %d\n", indice);
+	printf("NodeNumber: %d\n", _node_number);
+	inicialSolution = dfs(0,6);//solucaoKruskalAdaptada();
 	//std::vector<int> test = { 0,1,2,3,4,5,6,0 };
 	//std::vector<std::vector<int>> ga = CalculaVizinhancakOpt(test, 2);
 
@@ -605,12 +610,13 @@ std::vector<int> Solver::SimAnn()
 	int min, minAnterior, best;
 	float coolingRate = 0.002;
 	currentSolution = inicialSolution;
+	printf("Solucao inicial\n");
 	printasolucao(inicialSolution);
 	bestSolution = currentSolution;
 	best = funcaoObjetiva(currentSolution);
 	printf("Initial solution funcao objetiva: %d\n", best);
-	//for (int j = 0; j < 10; j++)
-	//{
+	for (int j = 0; j < 2; j++)
+	{
 		double T = 10000;
 		int cont = 0;
 		while (T > 1)
@@ -618,7 +624,7 @@ std::vector<int> Solver::SimAnn()
 			min = funcaoObjetiva(currentSolution);
 			minAnterior = min;
 			std::vector<std::vector<int>> vz = CalculaVizinhancakOpt(currentSolution, 2);
-			
+
 			for (int i = 0; i < vz.size(); i++)
 			{
 				int valor = funcaoObjetiva(vz[i]);
@@ -630,6 +636,7 @@ std::vector<int> Solver::SimAnn()
 					{
 						printf("Erro kopt\n");
 					}
+					
 				}
 				else
 				{
@@ -644,7 +651,7 @@ std::vector<int> Solver::SimAnn()
 						min = valor;
 						currentSolution = vz[i];
 						cont++;
-						
+
 						break;
 					}
 				}
@@ -666,46 +673,51 @@ std::vector<int> Solver::SimAnn()
 					}
 
 				}
-				if (min == minAnterior)
-				{
-					vz = CalculaVizinhancaSwap(currentSolution);
-					for (int i = 0; i < vz.size(); i++)
+				/*	if (min == minAnterior)
 					{
-						int valor = funcaoObjetiva(vz[i]);
-						if (valor < min)
+						vz = CalculaVizinhancaSwap(currentSolution);
+						for (int i = 0; i < vz.size(); i++)
 						{
-							min = valor;
-							currentSolution = vz[i];
-							if (currentSolution.back() != 0)
+							int valor = funcaoObjetiva(vz[i]);
+							if (valor < min)
 							{
-								printf("Erro relocate\n");
+								min = valor;
+								currentSolution = vz[i];
+								if (currentSolution.back() != 0)
+								{
+									printf("Erro relocate\n");
+								}
 							}
 						}
-					}
-				}
+					}*/
 			}
-		rodadas++;
-		if (best > min)
-		{
-			best = min;
-			bestSolution = currentSolution;
-		}
-		T *= 1 - coolingRate;
-		//printf("T: %lf\n", T);
+			rodadas++;
+			if (best > min)
+			{
+				best = min;
+				bestSolution = currentSolution;
+			}
+			T *= 1 - coolingRate;
+			//printf("T: %lf\n", T);
 
+		}
 	}
-	printf("Entrei %d\n", cont);
+	//printf("Entrei %d\n", cont);
 
 
 	//	std::sort(bestSolution.begin(), bestSolution.end());
 	printf("melhor solucao = %d rodadas: %d\n", best, rodadas);
+	printf("Melhor solucao \n");
+	printasolucao(bestSolution);
 	// printf("Vetor Encontrado:\n");
 	// for (auto i = 0; i < bestSolution.size(); i++)
 	// {
 	// 	printf(" %d -> ", bestSolution[i]);
 	// }
 
-
+	clock_t fim = std::clock();
+	float tempo = float(fim - inicio) / CLOCKS_PER_SEC;
+	printf("Tempo da Simulated Annealing: %lf\n", tempo);
 	return bestSolution;
 }
 
