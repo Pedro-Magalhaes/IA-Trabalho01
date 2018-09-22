@@ -97,10 +97,13 @@ bool matrixRepresentation::readMatrixData(std::string &matrixDataString)
             for (unsigned int j = 0; j < i+1; j++)
             {
                 ss >> x;
-                this->matrixData[i][j].first = i; // guardando o "id" do no, para não perder a info ao ordenar
-                this->matrixData[i][j].second = x; // peso do no
-                this->matrixData[j][i].first = j; // guardando o "id" do no, para não perder a info ao ordenar
-                this->matrixData[j][i].second = x; // peso do no
+                // colocando os dados na parte da linha
+                this->matrixData[i][j].second = x;
+                this->matrixData[i][j].first = j;
+
+                // colocando os dados da parte transtposta
+                this->matrixData[j][i].second = x;
+                this->matrixData[j][i].first = i;
                 if( x > maior)
                 {
                     maior = x;
@@ -177,7 +180,7 @@ std::vector < std::vector < std::pair<int,int> > > matrixRepresentation::constru
 		printf("%d ", i);
 		for (int j = 0;j < sorted[i].size();j++)
 		{
-			printf("%d ", sorted[i][j]);
+			printf("%d ", sorted[i][j].first);
 		}
 		printf("\n\n\n");
 	}
