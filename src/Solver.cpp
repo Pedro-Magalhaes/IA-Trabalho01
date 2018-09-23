@@ -388,13 +388,13 @@ std::vector<std::vector<int>> Solver::CalculaVizinhancaSwap(std::vector<int> &so
 {
 	if (limit == 0)
 	{
-		limit = this->_node_number;
+		limit = sol.size();
 	}
 	std::vector<std::vector<int>> vizinhanca;
-	for (int i = 1; i < limit+1; i++)
+	for (int i = 1; i < limit; i++)
 	{
 		// TODO: fazer uma vizinha�a olhando o elemento e ver qual a menor aresta, tentando posiciona-lo ao lado desse vizinho
-		for (int j = i+1; j < limit; j++)
+		for (int j = i+1; j < limit-1; j++)
 		{
 			std::vector<int >vAux(sol);
 			
@@ -587,13 +587,13 @@ std::vector<int> Solver::SimAnn()
 	printf("Indice: %d\n", indice);
 	printf("NodeNumber: %d\n", _node_number);
 	inicialSolution = dfs(0,6);//solucaoKruskalAdaptada();
-	//std::vector<int> test = { 0,1,2,3,4,5,6,0 };
-	//std::vector<std::vector<int>> ga = CalculaVizinhancakOpt(test, 2);
+	std::vector<int> test = { 0,1,2,3,4,5,6,0 };
+	std::vector<std::vector<int>> ga = CalculaVizinhancaSwap(test);
 
-	//for (int i = 0; i < ga.size(); i++)
-	//{
-	//	printasolucao(ga[i]);
-	//}
+	for (int i = 0; i < ga.size(); i++)
+	{
+		printasolucao(ga[i]);
+	}
 
 	//return bestSolution;
 	//for (int i = 0; i < this->_node_number; i++)
@@ -615,7 +615,7 @@ std::vector<int> Solver::SimAnn()
 	bestSolution = currentSolution;
 	best = funcaoObjetiva(currentSolution);
 	printf("Initial solution funcao objetiva: %d\n", best);
-	for (int j = 0; j < 2; j++)
+	for (int j = 0; j < 2;j++)
 	{
 		double T = 10000;
 		int cont = 0;
