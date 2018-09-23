@@ -97,10 +97,13 @@ bool matrixRepresentation::readMatrixData(std::string &matrixDataString)
             for (unsigned int j = 0; j < i+1; j++)
             {
                 ss >> x;
-                this->matrixData[i][j].first = i; // guardando o "id" do no, para não perder a info ao ordenar
-                this->matrixData[i][j].second = x; // peso do no
-                this->matrixData[j][i].first = j; // guardando o "id" do no, para não perder a info ao ordenar
-                this->matrixData[j][i].second = x; // peso do no
+                // colocando os dados na parte da linha
+                this->matrixData[i][j].second = x;
+                this->matrixData[i][j].first = j;
+
+                // colocando os dados da parte transtposta
+                this->matrixData[j][i].second = x;
+                this->matrixData[j][i].first = i;
                 if( x > maior)
                 {
                     maior = x;
@@ -139,8 +142,8 @@ bool matrixRepresentation::readMatrixData(std::string &matrixDataString)
             }
             
         }
-        this->sortedMatrixData = this->constructSortedMatrix(this->matrixData);
     }
+	this->sortedMatrixData = this->constructSortedMatrix(this->matrixData);
     std::cout<<"last x: "<< x << " num nodes "<< this->nodeNumber <<std::endl;
     std::cout<<"Maior: "<< maior <<" First = "<<this->matrixData[0][0].second<<" Last = "<< this->matrixData.back().back().second << std::endl;
     return true;
@@ -172,7 +175,6 @@ std::vector < std::vector < std::pair<int,int> > > matrixRepresentation::constru
         return a.second < b.second;   
         } );
     }
-
     return sorted;
 }
 
