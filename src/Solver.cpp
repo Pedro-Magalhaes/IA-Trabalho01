@@ -253,7 +253,7 @@ Solver::Solver(int n, matrixRepresentation & m)
 	_finalSolution.resize(n + 1);
 }
 // s == depot , p == profundidade maxima
-std::vector<int> Solver::dfs(int s, int p) //busca por profundidade => acho que t
+std::vector<int> Solver::dfs_latencia(int s, int p,int k) 
 {
 	clock_t inicio = std::clock();
 	int latencia;
@@ -277,19 +277,26 @@ std::vector<int> Solver::dfs(int s, int p) //busca por profundidade => acho que 
 		std::vector<std::pair<int,int>> melhoresVizinhos = _m.getSortedNeighbours(melhorCandidato);
 		//printf("2\n");
 		//Passando pelos vizinhos
+		int somaLatencia = 0;
+		int maxExploration = 0;
 		for (unsigned int j = 1; j < melhoresVizinhos.size(); j++)
 		{
 			//Se vizinho ainda não foi visitado, visita ele com a dfs_visit
 			if (inPath[melhoresVizinhos[j].first] == Color::WHITE)
 			{
 				//Percorre e calcula a latencia ate uma  profundidade p
-				latencia = dfs_visit(melhoresVizinhos[j].first, p - 1, melhoresVizinhos[j].second, &melhorLatencia, inPath, i);			
+				latencia = dfs_soma_latencia_visit(melhoresVizinhos[j].first, p - 1, melhoresVizinhos[j].second, &melhorLatencia, inPath, i,somaLatencia,k);			
 
 				//Se a latencia for melhor que a latencia do melhor candidato até agora, troca a melhor latencia e o melhor candidato
 				if (latencia < latMelhorCandidato)
 				{
 					latMelhorCandidato = latencia;
 					melhorCandidato = melhoresVizinhos[j].first;
+				}
+				if (maxExploration > k)
+				{
+					maxExploration++;
+					break;
 				}
 			}
 
@@ -299,7 +306,7 @@ std::vector<int> Solver::dfs(int s, int p) //busca por profundidade => acho que 
 		//Adiciona o melhor candidato ao nosso caminho
 		path.emplace_back(melhorCandidato);
 	}
-	//No final adiciona o depósito 
+	//No final adiciona novamente o depósito 
 	path.emplace_back(s); //back depot
 	printf("Latencia do path dfs: %d melhor latencia %d, size path %u\n",funcaoObjetiva(path),melhorLatencia,path.size());
 	printasolucao(path);
@@ -309,60 +316,53 @@ std::vector<int> Solver::dfs(int s, int p) //busca por profundidade => acho que 
 	return path;
 }
 // vai retornar o id do no com caminho mais barato e a latencia ate p
-int Solver::dfs_visit(int u, int p, int latencia, int * melhorLatencia, std::vector<Color> inPath, int pAtual)
+int Solver::dfs_soma_latencia_visit(int u, int p, int latencia, int * melhorLatencia, std::vector<Color> inPath, int pAtual,int somaLatencia, int k)
 {
+	somaLatencia += latencia;
 	inPath[u] = Color::GRAY;
-	if(latencia > *melhorLatencia) // ja nao eh um caminho viavel (podamos)
+
+	if(somaLatencia > *melhorLatencia) //(condicao de parada 1) ja nao eh um caminho viavel (podamos)
 	{
 		//printf("Poda em no %d , prof %d\n",u,p);
 		return INT_MAX;
 	}
-	if (p == 0) // Se a profundidade restante a ser explorada for zero
+	if (p == 0) //(condicao de parada 2) Se a profundidade restante a ser explorada for zero
 	{
-		if(latencia < *melhorLatencia)
+		if(somaLatencia < *melhorLatencia)
 		{
 			//printf("settando retornado p==0 %d, u %d\n", latencia,u);
-			*melhorLatencia = latencia;
+			*melhorLatencia = somaLatencia;
 		}
 		//printf("Latencia retornado p==0 %d\n", latencia);
-		return latencia;
+		return somaLatencia;
 	}
-	if(pAtual == _node_number - 1) // chegou no ultimo no tem que contar o custo do deposito
+	if(pAtual == _node_number - 1) //(condicao de parada 3) chegou no ultimo no tem que contar o custo do deposito
 	{
-		for(unsigned int i = 0; i< inPath.size( ); i++ ) // Debbug
+		somaLatencia = somaLatencia +_m.valueat(u,0);
+		if(*melhorLatencia > somaLatencia)
 		{
-			if(inPath[i] == Color::WHITE)
-			{
-				printf("erro alguem ainda costa como nao vizitado: no %d\n",i);
-			}
-		}
-		latencia = latencia +_m.valueat(u,0);
-		if(*melhorLatencia > latencia)
-		{
-			*melhorLatencia = latencia;
+			*melhorLatencia = somaLatencia;
 		}
 		//printf("Latencia retornado pnode number atingido %d\n", latencia);
-		return latencia;
+		return somaLatencia;
 	}
-
 	int thisLat;
 	int bestLat = INT_MAX;
 	auto vizinhosOrd = _m.getSortedNeighbours(u);
-	unsigned int i = 1; // 1 porque o 1 eh ele mesmo
+	unsigned int i = 1; // comecamos a percorrer de 1 porque vizinhoOrd[0] eh o proprio vertice com peso 0
 	int latenciaAtual = latencia;
-	
-	// como vai estar ordenado se a latencia atual + peso da aresta de u for maior
-	// que a melhor lat. encontrada ate o momento, nao precisamos percorrer o resto
-	while(i < vizinhosOrd.size() )
+	// Vai percorrer todos os vizinho do vertice corrente que ainda nao estao no caminho
+	int maxExploration = 0;
+	while(i < vizinhosOrd.size() && maxExploration < k)
 	{
 		if(inPath[vizinhosOrd[i].first] == Color::WHITE) 
 		{
 			latenciaAtual = latencia + vizinhosOrd[i].second;
 			
-			thisLat = dfs_visit(vizinhosOrd[i].first, p-1,latenciaAtual,melhorLatencia,inPath,pAtual+1);
+			thisLat = dfs_soma_latencia_visit(vizinhosOrd[i].first, p-1,latenciaAtual,melhorLatencia,inPath,pAtual+1,somaLatencia,k);
+			maxExploration++;
 			if(bestLat > thisLat)
 			{
-				
 				bestLat = thisLat;
 			//	printf("Hey trocando bestLat %d , thisLat %d\n",bestLat,thisLat);
 			}
@@ -491,7 +491,7 @@ std::vector<int> Solver::BuscaLocal()
 	std::vector<int> inicialSolution;
 	std::vector<int> currentSolution;
 	std::vector<int> bestSolution;
-	inicialSolution = dfs(0,6);//solucaoKruskalAdaptada();
+	inicialSolution = dfs_latencia(0,7,10);//solucaoKruskalAdaptada();
 	std::vector<int> test = {0,1,2,3,4,5,0};
 	//CalculaVizinhancakOpt(test, 2);
 	//for (int i = 0; i < this->_node_number; i++)
@@ -511,7 +511,7 @@ std::vector<int> Solver::BuscaLocal()
 	best = funcaoObjetiva(currentSolution);
 	for (int j = 0; j < 1; j++)
 	{
-		while (count < 1)
+		while (count < 5)
 		{
 			min = funcaoObjetiva(currentSolution);
 			minAnterior = min;
@@ -586,7 +586,7 @@ std::vector<int> Solver::SimAnn()
 	std::vector<int> bestSolution;
 	printf("Indice: %d\n", indice);
 	printf("NodeNumber: %d\n", _node_number);
-	inicialSolution = dfs(0,6);//solucaoKruskalAdaptada();
+	inicialSolution = dfs_latencia(0,7,10);//solucaoKruskalAdaptada();
 	std::vector<int> test = { 0,1,2,3,4,5,6,0 };
 	std::vector<std::vector<int>> ga = CalculaVizinhancaSwap(test);
 
@@ -617,7 +617,7 @@ std::vector<int> Solver::SimAnn()
 	printf("Initial solution funcao objetiva: %d\n", best);
 	for (int j = 0; j < 2;j++)
 	{
-		double T = 10000;
+		double T = 1000;
 		int cont = 0;
 		while (T > 1)
 		{

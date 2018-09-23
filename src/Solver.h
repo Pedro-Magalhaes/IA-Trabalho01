@@ -13,17 +13,17 @@ private:
 			GRAY,
 			BLACK
 		};
-	std::vector<int> generateRandomSolution();
-	int funcaoObjetiva(std::vector<int> & sol);
+	std::vector<int> generateRandomSolution();	
 	std::vector<matrixRepresentation::edge> getSortedEdges();
 	std::vector<int> TwoOptSwap(const std::vector<int>& currentSol, int i, int k);
 public:
 	Solver();
 	Solver(int n,matrixRepresentation & m);
+	int funcaoObjetiva(std::vector<int> & sol);
 	std::vector<int> solucaoGulosa();
 	std::vector<int> solucaoKruskalAdaptada();
-	std::vector<int> dfs(int s, int p);
-	int dfs_visit(int u, int p, int latencia, int * melhorLatencia,std::vector<Color> inPath, int pAtual);
+	std::vector<int> dfs_latencia(int s, int p,int k);
+	int dfs_soma_latencia_visit(int u, int p, int latencia, int * melhorLatencia,std::vector<Color> inPath, int pAtual, int somaLatencia,int k);
 	std::vector<int> BAHIA();
 	std::vector<std::vector<int>> CalculaVizinhancaSwap(std::vector<int>& sol,int limit = 0);
 	std::vector<std::vector<int>> CalculaVizinhancaRelocate(std::vector<int>& sol);
