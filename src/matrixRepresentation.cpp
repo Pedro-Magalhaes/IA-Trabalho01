@@ -144,8 +144,7 @@ bool matrixRepresentation::readMatrixData(std::string &matrixDataString)
         }
     }
 	this->sortedMatrixData = this->constructSortedMatrix(this->matrixData);
-    std::cout<<"last x: "<< x << " num nodes "<< this->nodeNumber <<std::endl;
-    std::cout<<"Maior: "<< maior <<" First = "<<this->matrixData[0][0].second<<" Last = "<< this->matrixData.back().back().second << std::endl;
+    std::cout<<"Num nodes "<< this->nodeNumber <<std::endl;
     return true;
 }
 

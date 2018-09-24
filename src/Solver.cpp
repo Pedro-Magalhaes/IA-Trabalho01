@@ -96,9 +96,16 @@ std::vector<int> Solver::solucaoKruskalAdaptada()
 			}
 		}		
 	}	
-	std::vector<matrixRepresentation::edge> aux(caminho);
+	
+	return kruskalGetBestPath(caminho);
+}
 
-	std::sort(caminho.begin(), caminho.end(), [](matrixRepresentation::edge a, matrixRepresentation::edge b) {
+//Dado um caminho so com as arestas de ex: 0 1 2 3 0 , retorna se eh melhor fazer 0 1 2 3 0 ou 0 3 2 1 0
+std::vector<int> Solver::kruskalGetBestPath(std::vector<matrixRepresentation::edge> pathA)
+{
+	unsigned int n = this->_node_number;
+	std::vector<matrixRepresentation::edge> pathB(pathA);
+	std::sort(pathA.begin(), pathA.end(), [](matrixRepresentation::edge a, matrixRepresentation::edge b) {
 		if (a.from < b.from)
 		{
 			return true;
@@ -107,67 +114,48 @@ std::vector<int> Solver::solucaoKruskalAdaptada()
 		{
 			return a.weight < b.weight;
 		}
-		
-		return false ;
-	} );
 
-	std::sort( aux.begin(),aux.end(),[] (matrixRepresentation::edge a,matrixRepresentation::edge b){
-		if(a.to < b.to)
+		return false;
+	});
+
+	std::sort(pathB.begin(), pathB.end(), [](matrixRepresentation::edge a, matrixRepresentation::edge b) {
+		if (a.to < b.to)
 		{
-			return true;	
+			return true;
 		}
 		if (a.to == b.to)
 		{
 			return a.weight < b.weight;
 		}
-		
-		return false ;
-	} );
-	
-	// for(int i = 0; i < caminho.size(); i++)
-	// {
-	// 	printf("aresta ( %d , %d ) peso: %d \n",caminho[i].from,caminho[i].to,caminho[i].weight);
-	// }
-	// printf("numero de arestas: %d, count:%d , sets: %d\n",caminho.size(),count,conected.getNumSets());
 
-	// for(int i = 0; i < grau.size(); i++)
-	// {
-	// 	if(grau[i].first < 1 || grau[i].second < 1)
-	// 	{
-	// 		printf("grau errado de %d: grau = %d n=%d, arestas: %d\n",i,grau[i],n,arestasOrd.size());
-	// 	}
-	// }
-	currentEdge = caminho[0];
-	pathA.push_back(currentEdge.from);
+		return false;
+	});
+	// calculando a rota do pathA
+	auto currentEdge = pathA[0];
+	std::vector<int> caminhoA;
+	caminhoA.push_back(currentEdge.from);
+	int count = 1;
+	while (count < n + 1)
+	{
+		caminhoA.push_back(currentEdge.to);
+		currentEdge = pathA[currentEdge.to];
+		count++;
+	}
+
+	std::vector<int> caminhoB;
+	currentEdge = pathB[0];
+	caminhoB.push_back(currentEdge.to);
 	count = 1;
 	while (count < n + 1)
 	{
-		pathA.push_back(currentEdge.to);
-		currentEdge = caminho[currentEdge.to];
+		caminhoB.push_back(currentEdge.from);
+		currentEdge = pathB[currentEdge.from];
 		count++;
 	}
-
-	// for(int i = 0; i < path.size(); i++)
-	// {
-	// 	printf(" %d >",path[i]);
-	// }
-	// printf("\n");
-	// printf("peso caminho ord por from: %d\n",this->funcaoObjetiva(pathA));
-
-	currentEdge = aux[0];
-	pathB.push_back(currentEdge.to);
-	count = 1;
-	while(count < n+1)
-	{
-		pathB.push_back(currentEdge.from);
-		currentEdge = aux[currentEdge.from];
-		count++;
-	}
-	// printf("peso caminho ord por to: %d\n",this->funcaoObjetiva(pathB));
-	return this->funcaoObjetiva(pathB) < funcaoObjetiva(pathA)? pathB : pathA;
+	return this->funcaoObjetiva(caminhoB) < funcaoObjetiva(caminhoA) ? caminhoB : caminhoA;
 }
 
-
+// Implementamos mas não estamos utilizando pois deu resultados ruins, pegava o proximo no mais "perto" e colocava no caminho
 std::vector<int> Solver::solucaoGulosa()
 {
 	std::vector<bool> isInSolucao(this->_node_number + 1,false);
@@ -185,10 +173,6 @@ std::vector<int> Solver::solucaoGulosa()
 	std::pair<int,int> bestNode;
 
 	sortedNeighbors = this->_m.getSortedNeighbours(0);
-	for(int j = 1; j < this->_node_number; j++)
-		{
-			//printf("f: %d  s:  %d\n ",sortedNeighbors[j].first,sortedNeighbors[j].second);
-		}
 	// partindo do primeiro no [0] indo até [n-2]
 	for(auto i = 0; i < this->_node_number - 1; i++) 
 	{
@@ -219,12 +203,7 @@ std::vector<int> Solver::solucaoGulosa()
 	//adicionando a volta para o depot
 	solucao[this->_node_number] = 0;
 	soma+= soma + this->_m.nodeAt(0,bestNode.first).second;
-	for(unsigned int i=0;i<solucao.size();i++)
-	{
-		//printf(" %d >",solucao[i]);
-	}
-	//printf("\n");
-	//printf("Custo solucao calulado: %u, custo calculado com func atual %d: \n",soma,this->funcaoObjetiva(solucao));
+
 	return solucao;
 }
 
@@ -235,7 +214,6 @@ int Solver::funcaoObjetiva(std::vector<int>& sol)
 	int latencia = 0;
 	for (int i = 0; i < sol.size()-1; i++)
 	{
-		//printf("peso from %d to %d: %d\n", sol[i], sol[i + 1], _m.nodeAt(sol[i], sol[i + 1]).second);
 		soma += _m.nodeAt(sol[i], sol[i + 1]).second ;
 		latencia += soma;
 	}
@@ -252,7 +230,7 @@ Solver::Solver(int n, matrixRepresentation & m)
 	_node_number = n;
 	_finalSolution.resize(n + 1);
 }
-// s == depot , p == profundidade maxima
+// s == depot , p == profundidade maxima k == numero de vizinhos a explorar
 std::vector<int> Solver::dfs_latencia(int s, int p,int k) 
 {
 	clock_t inicio = std::clock();
@@ -269,13 +247,10 @@ std::vector<int> Solver::dfs_latencia(int s, int p,int k)
 	//percorre todos  os nós
 	for(unsigned int i = 1; i<_m.getNodeNumber(); i++)
 	{
-		//printf("0\n");
 		melhorLatencia = INT_MAX;
 		latMelhorCandidato = INT_MAX;
-		//printf("1\n");
 		//Pegando vizinhos ordenados por ordem de custo do melhor candidato que no inicio eh o deposito
 		std::vector<std::pair<int,int>> melhoresVizinhos = _m.getSortedNeighbours(melhorCandidato);
-		//printf("2\n");
 		//Passando pelos vizinhos
 		int somaLatencia = 0;
 		int maxExploration = 0;
@@ -308,8 +283,6 @@ std::vector<int> Solver::dfs_latencia(int s, int p,int k)
 	}
 	//No final adiciona novamente o depósito 
 	path.emplace_back(s); //back depot
-	printf("Latencia do path dfs: %d melhor latencia %d, size path %u\n",funcaoObjetiva(path),melhorLatencia,path.size());
-	printasolucao(path);
 	clock_t fim = std::clock();
 	float tempo = float(fim - inicio)/ CLOCKS_PER_SEC;
 	printf("Tempo da busca gulosa: %lf\n",tempo );
@@ -330,10 +303,8 @@ int Solver::dfs_soma_latencia_visit(int u, int p, int latencia, int * melhorLate
 	{
 		if(somaLatencia < *melhorLatencia)
 		{
-			//printf("settando retornado p==0 %d, u %d\n", latencia,u);
 			*melhorLatencia = somaLatencia;
 		}
-		//printf("Latencia retornado p==0 %d\n", latencia);
 		return somaLatencia;
 	}
 	if(pAtual == _node_number - 1) //(condicao de parada 3) chegou no ultimo no tem que contar o custo do deposito
@@ -343,7 +314,6 @@ int Solver::dfs_soma_latencia_visit(int u, int p, int latencia, int * melhorLate
 		{
 			*melhorLatencia = somaLatencia;
 		}
-		//printf("Latencia retornado pnode number atingido %d\n", latencia);
 		return somaLatencia;
 	}
 	int thisLat;
@@ -376,14 +346,8 @@ int Solver::dfs_soma_latencia_visit(int u, int p, int latencia, int * melhorLate
 	return bestLat;
 }
 
-//Implementa uma Busca com aprofundamento iterativo com poda
-std::vector<int> Solver::BAHIA()
-{
-	int i,p;
-	p = 3;
-	//recursivooooo
-	return std::vector<int>();
-}
+
+
 std::vector<std::vector<int>> Solver::CalculaVizinhancaSwap(std::vector<int> &sol, int limit)
 {
 	if (limit == 0)
@@ -456,25 +420,10 @@ std::vector < int> Solver::TwoOptSwap(const std::vector<int> & currentSol, int i
 }
 
 
-std::vector<std::vector<int>> Solver::CalculaVizinhancakOpt(std::vector<int> &sol,int r)
+std::vector<std::vector<int>> Solver::CalculaVizinhanca2Opt(std::vector<int> &sol)
 {
 	unsigned int n = sol.size();
 	std::vector<std::vector<int>> vizinhanca;
-	//for (int i = 1; i < sol.size() - k; i++) 
-	//{
-	//	std::vector<int > vAux(sol);
-	//	int count = 1;
-	//	for (int j = i; j < i + k; j++)
-	//	{
-	//		vAux[j] = sol[i + k - count];
-	//			count++;
-	//	}
-	//	/*for (int t = 0; t < vAux.size(); t++)
-	//	{
-	//		printf(" %d ", vAux[t]);
-	//	}
-	//	printf("\n\n");*/
-	//}
 
 	for (int i = 1; i < n - 2; i++) {
 		for (int k = i + 1; k < n-1 ; k++) {
@@ -485,24 +434,14 @@ std::vector<std::vector<int>> Solver::CalculaVizinhancakOpt(std::vector<int> &so
 	return vizinhanca;
 }
 
-//Implementa uma Busca Local (Hill Climbing??)
+//Implementa uma Busca Local 
 std::vector<int> Solver::BuscaLocal()
 {
+	clock_t inicio = std::clock();
 	std::vector<int> inicialSolution;
 	std::vector<int> currentSolution;
 	std::vector<int> bestSolution;
-	inicialSolution = dfs_latencia(0,7,10);//solucaoKruskalAdaptada();
-	std::vector<int> test = {0,1,2,3,4,5,0};
-	//CalculaVizinhancakOpt(test, 2);
-	//for (int i = 0; i < this->_node_number; i++)
-	//{
-	//	printf(" %d, ", inicialSolution[i]);
-	//}
-	//printf("\n");
-	//printf("fo: %d\n", funcaoObjetiva(inicialSolution));
-	
-	
-	//printf("solucao inicial = %d \n", min);
+	inicialSolution = dfs_latencia(0,7,5);
 	int rodadas = 0;
 	int count = 0;
 	int min, minAnterior,best;
@@ -515,7 +454,7 @@ std::vector<int> Solver::BuscaLocal()
 		{
 			min = funcaoObjetiva(currentSolution);
 			minAnterior = min;
-			std::vector<std::vector<int>> vz = CalculaVizinhancakOpt(currentSolution); //CalculaVizinhancaSwap(currentSolution);
+			std::vector<std::vector<int>> vz = CalculaVizinhanca2Opt(currentSolution); 
 			for (int i = 0; i < vz.size(); i++)
 			{
 				int valor = funcaoObjetiva(vz[i]);
@@ -536,21 +475,8 @@ std::vector<int> Solver::BuscaLocal()
 						min = valor;
 						currentSolution = vz[i];
 					}
-				}
-				if (min == minAnterior)
-				{
-					vz = CalculaVizinhancaRelocate(currentSolution);
-					for (int i = 0; i < vz.size(); i++)
-					{
-						int valor = funcaoObjetiva(vz[i]);
-						if (valor < min)
-						{
-							min = valor;
-							currentSolution = vz[i];
-						}
-					}
 					count++;
-				}
+				}				
 			}
 			rodadas++;
 		}
@@ -562,14 +488,10 @@ std::vector<int> Solver::BuscaLocal()
 		currentSolution = generateRandomSolution();
 	}
 	
-
-//	std::sort(bestSolution.begin(), bestSolution.end());
-	printf("melhor solucao = %d rodadas: %d\n", best,rodadas);
-	// printf("Vetor Encontrado:\n");
-	// for (auto i = 0; i < bestSolution.size(); i++)
-	// {
-	// 	printf(" %d -> ",bestSolution[i]);
-	// }
+	printf("melhor solucao busca local = %d rodadas: %d\n", best,rodadas);
+	clock_t fim = std::clock();
+	float tempo = float(fim - inicio) / CLOCKS_PER_SEC;
+	printf("Tempo da busca local: %lf\n", tempo);
 
 
 
@@ -577,44 +499,23 @@ std::vector<int> Solver::BuscaLocal()
 }
 
 //Implementa Simulated Annealing
-std::vector<int> Solver::SimAnn()
+std::vector<int> Solver::SimAnn(int p , int k)
 {
 	clock_t inicio = std::clock();
 	int indice = ((_node_number )%6) + 6;
 	std::vector<int> inicialSolution;
 	std::vector<int> currentSolution;
 	std::vector<int> bestSolution;
-	printf("Indice: %d\n", indice);
-	printf("NodeNumber: %d\n", _node_number);
-	inicialSolution = dfs_latencia(0,7,10);//solucaoKruskalAdaptada();
-	std::vector<int> test = { 0,1,2,3,4,5,6,0 };
-	std::vector<std::vector<int>> ga = CalculaVizinhancaSwap(test);
-
-	for (int i = 0; i < ga.size(); i++)
-	{
-		printasolucao(ga[i]);
-	}
-
-	//return bestSolution;
-	//for (int i = 0; i < this->_node_number; i++)
-	//{
-	//	printf(" %d, ", inicialSolution[i]);
-	//}
-	//printf("\n");
-	//printf("fo: %d\n", funcaoObjetiva(inicialSolution));
-
-
-	//printf("solucao inicial = %d \n", min);
+	//printf("Indice: %d\n", indice);
+	//printf("NodeNumber: %d\n", _node_number);
+	inicialSolution = dfs_latencia(0,7,5);
 	int rodadas = 0;
 	int count = 0;
 	int min, minAnterior, best;
 	float coolingRate = 0.002;
 	currentSolution = inicialSolution;
-	printf("Solucao inicial\n");
-	printasolucao(inicialSolution);
 	bestSolution = currentSolution;
 	best = funcaoObjetiva(currentSolution);
-	printf("Initial solution funcao objetiva: %d\n", best);
 	for (int j = 0; j < 2;j++)
 	{
 		double T = 1000;
@@ -623,7 +524,7 @@ std::vector<int> Solver::SimAnn()
 		{
 			min = funcaoObjetiva(currentSolution);
 			minAnterior = min;
-			std::vector<std::vector<int>> vz = CalculaVizinhancakOpt(currentSolution, 2);
+			std::vector<std::vector<int>> vz = CalculaVizinhanca2Opt(currentSolution);
 
 			for (int i = 0; i < vz.size(); i++)
 			{
@@ -631,12 +532,7 @@ std::vector<int> Solver::SimAnn()
 				if (valor < min)
 				{
 					min = valor;
-					currentSolution = vz[i];
-					if (currentSolution.back() != 0)
-					{
-						printf("Erro kopt\n");
-					}
-					
+					currentSolution = vz[i];					
 				}
 				else
 				{
@@ -666,30 +562,9 @@ std::vector<int> Solver::SimAnn()
 					{
 						min = valor;
 						currentSolution = vz[i];
-						if (currentSolution.back() != 0)
-						{
-							printf("Erro swap\n");
-						}
 					}
 
 				}
-				/*	if (min == minAnterior)
-					{
-						vz = CalculaVizinhancaSwap(currentSolution);
-						for (int i = 0; i < vz.size(); i++)
-						{
-							int valor = funcaoObjetiva(vz[i]);
-							if (valor < min)
-							{
-								min = valor;
-								currentSolution = vz[i];
-								if (currentSolution.back() != 0)
-								{
-									printf("Erro relocate\n");
-								}
-							}
-						}
-					}*/
 			}
 			rodadas++;
 			if (best > min)
@@ -698,22 +573,10 @@ std::vector<int> Solver::SimAnn()
 				bestSolution = currentSolution;
 			}
 			T *= 1 - coolingRate;
-			//printf("T: %lf\n", T);
-
 		}
 	}
-	//printf("Entrei %d\n", cont);
 
-
-	//	std::sort(bestSolution.begin(), bestSolution.end());
-	printf("melhor solucao = %d rodadas: %d\n", best, rodadas);
-	printf("Melhor solucao \n");
-	printasolucao(bestSolution);
-	// printf("Vetor Encontrado:\n");
-	// for (auto i = 0; i < bestSolution.size(); i++)
-	// {
-	// 	printf(" %d -> ", bestSolution[i]);
-	// }
+	printf("melhor solucao annealing = %d rodadas: %d\n", best, rodadas);
 
 	clock_t fim = std::clock();
 	float tempo = float(fim - inicio) / CLOCKS_PER_SEC;

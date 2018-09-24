@@ -107,13 +107,23 @@ int getProblemData(unsigned int &size, MatrixType &mType, std::string &text)
 int main(int argc, char **argv)
 {
 
-    std::vector<std::string> files = {"dataset/brazil58.tsp","dataset/dantzig42.tsp" ,"dataset/gr48.tsp"/*,"dataset/gr120.tsp","dataset/pa561.tsp"*/};
+    std::vector<std::string> files = {/*"dataset/brazil58.tsp",*/"dataset/dantzig42.tsp" ,"dataset/gr48.tsp"/*,"dataset/gr120.tsp","dataset/pa561.tsp"*/ };
 	unsigned int nodeNumber = 0;
 	matrixRepresentation problemMatrix;
+	int p = 6;// profundidade da busca_gulosa
+	int k = 5;// numero max de vizinhos abertos pela busca_gulosa
 	if (argc > 1)
 	{
 		files.clear();
 		files.emplace_back(std::string(argv[1]));
+		if (argc > 2)
+		{
+			p = atoi(argv[2]);
+			if (argc > 3)
+			{
+				k = atoi(argv[3]);
+			}
+		}
 		
 	}
     for (size_t i = 0; i < files.size(); i++)
@@ -147,31 +157,23 @@ int main(int argc, char **argv)
 
         	Solver s(nodeNumber,problemMatrix);
 
-        std::vector<int> aux;
+		std::vector<int> path;
         
         //aux = s.solucaoGulosa();
-		//int best = INT_MAX;
-		//int lat=0;
-		//int p = 0;
-		//std::vector<int> path;
-		//for (int i = 0; i < 1; i++)
-		//{
-		//	printf("DFS latencia total jeff com p = %d: \n",7);
-		//	path = s.dfs_latencia(0, 7,10);
-		//	lat = s.funcaoObjetiva(path);
-		//	if (best > lat)
-		//	{
-		//		best = lat;
-		//		p = i;
-		//	}
-		//	
-		//}
-		//std::cout << "\n\nMelhor profundidade para dfs " << p << "valor encontrado para o problema " << files[i] << " valor: " << best << "\n" << std::endl;
+
+		
+		int lat = 0;
+		printf("Gulosa_DFS latencia total com p = %d e k = %d: \n", p,k);
+		path = s.dfs_latencia(0, p,k);
+		lat = s.funcaoObjetiva(path);
+		printf("latencia encontrada %d: \n", lat);
+		
+		
         
-        //printf("\n\tLocal:\n\n");
-        //aux = s.BuscaLocal();
+        printf("\n\tLocal:\n\n");
+        path = s.BuscaLocal();
         printf("\n\tAnnealing:\n");
-        aux = s.SimAnn();
+        path = s.SimAnn();
     }
 
  
