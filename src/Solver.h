@@ -29,7 +29,7 @@ public:
 	std::vector<std::vector<int>> CalculaVizinhancaRelocate(std::vector<int>& sol);
 	std::vector<std::vector<int>> CalculaVizinhanca2Opt(std::vector<int>& sol);
 	std::vector<int> BuscaLocal();
-	std::vector<int> SimAnn();
+	std::vector<int> SimAnn(int p = 6, int k = 5);
 	~Solver();
 
 private:
